@@ -1,0 +1,17 @@
+image: bradygm/trochoids-test
+
+pipelines:
+  default:
+    - step:
+        name: Build and Test
+        script:
+          - cd /ws/src/
+          - git clone --branch $BITBUCKET_BRANCH https://bradygm@bitbucket.org/castacks/trochoids.git
+          - cd /ws
+          - catkin build
+          - catkin build --make-args tests -- trochoids
+          - source devel/setup.bash
+          - ./devel/lib/trochoids/trochoids-benchmark
+          - roscore &
+          - sleep 2
+          - rosrun trochoids trochoids-test

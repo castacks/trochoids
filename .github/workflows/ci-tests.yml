@@ -1,0 +1,164 @@
+name: Build, Test, and Benchmark
+
+on:
+  push:
+    branches:
+        - master
+        - develop
+  pull_request:
+    types: [opened, reopened]
+    branches:
+        - master
+        - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    container: 
+      image: bradygm/trochoids-test
+    if: "always() && !contains(github.event.head_commit.message, 'DO-NOT-RUN')"
+    steps:
+    - name: 'Preparing workspace'
+      uses: actions/checkout@v3
+      with:
+        path: ws/src/
+
+
+    - name: build workspace
+      run: |
+        cd ws/
+        catkin config --extend /opt/ros/$ROS_DISTRO 
+        catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release
+        catkin build
+        catkin build --make-args tests -- trochoids
+
+    # Run benchmark with `go test -bench` and stores the output to a file
+    # --benchmark_repetitions=12 --benchmark_min_time=0.042
+    - name: Run benchmark
+      shell: bash
+      run: |
+        source /opt/ros/melodic/setup.bash
+        source ws/devel/setup.bash
+        roscore &
+        sleep 3
+        ./ws/devel/lib/trochoids/trochoids-benchmark --benchmark_format=json | tee benchmark_result.json
+        pkill rosmaster
+        git config --global user.name "Github Action"
+        git config --global user.email "github@github.com"
+
+    # Download previous benchmark result from cache (if exists)
+    - name: Download previous benchmark data
+      uses: actions/cache@v3
+      with:
+        path: ./cache
+        key: ${{ runner.os }}-benchmark
+    # Run `github-action-benchmark` action
+    - name: Store benchmark result
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        # What benchmark tool the output.txt came from
+        tool: 'googlecpp'
+        # Where the output from the benchmark tool is stored
+        output-file-path: benchmark_result.json
+        # Where the previous data file is stored
+        external-data-json-path: ./cache/benchmark-data.json
+        # Workflow will fail when an alert happens
+        fail-on-alert: false
+        # GitHub API token to make a commit comment
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        # Enable alert commit comment
+        comment-on-alert: true
+        # Mention @rhysd in the commit comment
+        alert-comment-cc-users: '@bradygm'
+        alert-threshold: 200%
+        # comment-always: true
+    # Upload the updated cache file for the next job by actions/cache
+
+    - name: Run unit tests
+      shell: bash
+      run: |
+        source /opt/ros/melodic/setup.bash
+        source ws/devel/setup.bash
+        roscore &
+        sleep 1
+        ./ws/devel/lib/trochoids/trochoids-test
+
+
+# name: Save results to gh-pages
+
+# on:
+#   push:
+#     branches:
+#         - master
+#   # workflow_run:
+#   #   workflows: ["Build, Test, and Benchmark"]
+#   #   types:
+#   #     - completed
+#   #   branches:
+#   #     - master
+
+# jobs:
+#   benchmark-and-publish:
+#     runs-on: ubuntu-latest
+#     container: 
+#       image: bradygm/trochoids-test
+#     if: "always() && !contains(github.event.head_commit.message, 'DO-NOT-RUN')"
+#     steps:
+#     - name: 'Preparing workspace'
+#       uses: actions/checkout@v3
+#       with:
+#         path: ws/src/
+
+#     - name: build workspace
+#       run: |
+#         cd ws/
+#         catkin config --extend /opt/ros/$ROS_DISTRO 
+#         catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release
+#         catkin build
+
+#     # Run benchmark with `go test -bench` and stores the output to a file
+#     # --benchmark_repetitions=12 --benchmark_min_time=0.042
+#     - name: Run benchmark
+#       shell: bash
+#       run: |
+#         source /opt/ros/melodic/setup.bash
+#         source ws/devel/setup.bash
+#         roscore &
+#         sleep 3
+#         ./ws/devel/lib/trochoids/trochoids-benchmark --benchmark_format=json | tee benchmark_result.json
+#         pkill rosmaster
+#         git config --global user.name "Github Action"
+#         git config --global user.email "github@github.com"
+#         echo "$(pwd)"
+#         echo "$(ls)"
+
+#     # Download previous benchmark result from cache (if exists)
+#     - name: Download previous benchmark data
+#       uses: actions/cache@v3
+#       with:
+#         path: ./cache
+#         key: ${{ runner.os }}-benchmark
+
+#     - name: Preparing gh-pages workspace
+#       uses: actions/checkout@v3
+
+#     # Run `github-action-benchmark` action
+#     - name: Store benchmark result
+#       uses: benchmark-action/github-action-benchmark@v1
+#       with:
+#         # What benchmark tool the output.txt came from
+#         tool: 'googlecpp'
+#         # Where the output from the benchmark tool is stored
+#         output-file-path: /__w/trochoids/trochoids/benchmark_result.json
+#         # Workflow will fail when an alert happens
+#         fail-on-alert: false
+#         # GitHub API token to make a commit comment
+#         github-token: ${{ secrets.GITHUB_TOKEN }}
+#         # Enable alert commit comment
+#         comment-on-alert: false
+#         # Mention @rhysd in the commit comment
+#         alert-comment-cc-users: '@bradygm'
+#         alert-threshold: 200%
+#         auto-push: true
+#     # Upload the updated cache file for the next job by actions/cache
+      

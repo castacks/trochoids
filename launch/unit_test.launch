@@ -1,0 +1,5 @@
+<launch>
+
+    <node pkg="trochoids" type="trochoids-test" name="unit_tests" output="screen" args=""/>
+
+</launch>
