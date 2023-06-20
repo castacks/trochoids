@@ -1,14 +1,46 @@
-/*
-Modified by Sagar Sachdev on 11/22/22
-*/
+/*********************************************************************
+    The Clear BSD License
+
+    Copyright (c) 2023, AirLab
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted (subject to the limitations in the disclaimer
+    below) provided that the following conditions are met:
+
+        * Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+        * Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+        * Neither the name of the copyright holder nor the names of its
+        contributors may be used to endorse or promote products derived from this
+        software without specific prior written permission.
+
+    NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY
+    THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+    CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+    PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+    BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+    IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+*********************************************************************/
+
+/* Authors: Sagar Sachdev, Brady Moon*/
 
 #include <gtest/gtest.h>
 #include "trochoids/trochoid_utils.h"
 #include <iostream>
 #include <fstream>
 
-// #define HOME_PATH "/home/sagar/ipp_ws/src/trochoids/test/csv_files/"
-#define HOME_PATH "/home/moon/code/onr_ws/src/trochoids/test/csv_files/"
+#define HOME_PATH "/<path-to-where-you-want-to-save-files>"
 
 void path_to_file(std::vector<trochoids::XYZPsiState> &trochoid_path, std::string path_name)
 {
@@ -523,9 +555,6 @@ TEST_F(TrochoidTestFixture, failure_case5)
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::cout << "value_new: " << value_new << std::endl;
-    // std::string csv_save = std::string(HOME_PATH) + "failure5.csv";
-    // path_to_file(trochoid_path, csv_save);
     EXPECT_TRUE(abs(value_new - 1455.07) < 2);
 }
 
@@ -544,20 +573,12 @@ TEST_F(TrochoidTestFixture, failure_case7)
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path);
     EXPECT_TRUE(abs(value_new - 1102.54) < 2);
-    // std::string csv_save = std::string(HOME_PATH) + "failure7_numerical.csv";
-    // path_to_file(trochoid_path, csv_save);
-    // std::cout << "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure5_numerical.csv");
+
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure7.csv";
-    // path_to_file(trochoid_path, csv_save1);
-    // std::cout << "value_new: " << value_new << std::endl;
-    // path_to_file(trochoid_path, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure5_new.csv");
     
     EXPECT_TRUE(abs(value_new - 1102.54) < 2);
 }
@@ -578,21 +599,13 @@ TEST_F(TrochoidTestFixture, failure_case8)
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path);
     EXPECT_TRUE(abs(value_new - 675.463) < 2);
-    // std::cout << "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure8_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "failure8_numerical.csv";
-    // path_to_file(trochoid_path2, csv_save);
-
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::cout << "value_new: " << value_new << std::endl;
-    // path_to_file(trochoid_path, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure8_new.csv");
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure8_new.csv";
-    // path_to_file(trochoid_path, csv_save1);
+
     EXPECT_TRUE(abs(value_new - 675.463) < 2);
 }
 
@@ -612,20 +625,13 @@ TEST_F(TrochoidTestFixture, failure_case9)
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path);
     EXPECT_TRUE(abs(value_new - 748.1) < 2);
-    // std::cout <`< "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure9_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "failure9_numerical.csv";
-    // path_to_file(trochoid_path, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::cout << "value_new: " << value_new << std::endl;
-    // path_to_file(trochoid_path, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure9_new.csv");
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure9_new.csv";
-    // path_to_file(trochoid_path, csv_save1);
+
     EXPECT_TRUE(abs(value_new - 748.1) < 2);
 }
 
@@ -649,20 +655,13 @@ TEST_F(TrochoidTestFixture, failure_case10)
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path);
     EXPECT_TRUE(abs(value_new - 1453) < 2);
-    // std::cout <`< "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure9_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "failure9_numerical.csv";
-    // path_to_file(trochoid_path, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::cout << "value_new: " << value_new << std::endl;
-    // path_to_file(trochoid_path, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure9_new.csv");
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure9_new.csv";
-    // path_to_file(trochoid_path, csv_save1);
+
     EXPECT_TRUE(abs(value_new - 1453) < 2);
 }
 
@@ -721,25 +720,12 @@ TEST_F(TrochoidTestFixture, failure_case11)
     bool valid2 = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path2, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path2);
-    // ROS_INFO("Value numerical: %f", value_new);
-    // EXPECT_TRUE(abs(value_new - 748.1) < 2);
-    // std::cout <`< "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure9_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "failure11_numerical.csv";
-    // path_to_file(trochoid_path2, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::cout << "value_new: " << value_new << std::endl;
-    // path_to_file(trochoid_path, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure9_new.csv");
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure11_new.csv";
-    // if (valid)
-    //     path_to_file(trochoid_path, csv_save1);
-    // EXPECT_TRUE(abs(value_new - 748.1) < 2);
-    // ROS_INFO("Value new: %f", value_new);
 }
 
 TEST_F(TrochoidTestFixture, decision_point_func_save11)
@@ -791,25 +777,15 @@ TEST_F(TrochoidTestFixture, failure_case12)
     bool valid2 = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path2, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path2);
-    // ROS_INFO("Value numerical: %f", value_new);
-    // EXPECT_TRUE(abs(value_new - 748.1) < 2);
     EXPECT_TRUE(abs(value_new - 311.074935) < 2);
-    // std::cout <`< "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/failure12_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "failure12_numerical.csv";
-    // path_to_file(trochoid_path2, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::cout << "value_new: " << value_new << std::endl;
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/failure12_new.csv");
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure12_new.csv";
-    // path_to_file(trochoid_path, csv_save1);
+
     EXPECT_TRUE(abs(value_new - 311.074935) < 2);
-    // ROS_INFO("Value new: %f", value_new);
 }
 
 TEST_F(TrochoidTestFixture, failure_case13)
@@ -828,23 +804,15 @@ TEST_F(TrochoidTestFixture, failure_case13)
     bool valid2 = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path2, wind, desired_speed, max_kappa, true);
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path2);
-    // ROS_INFO("Value numerical: %f", value_new);
-    // EXPECT_TRUE(abs(value_new - 748.1) < 2);
     EXPECT_TRUE(abs(value_new - 1021.797280) < 2);
-    // std::cout <`< "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/failure13_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "failure13_numerical.csv";
-    // path_to_file(trochoid_path2, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure13_new.csv";
-    // path_to_file(trochoid_path, csv_save1);
+
     EXPECT_TRUE(abs(value_new - 1021.797280) < 2);
-    // ROS_INFO("Value new: %f", value_new);
 }
 
 // // CCC Trajectory
@@ -864,25 +832,15 @@ TEST_F(TrochoidTestFixture, DISABLED_dubins_v_numerical1)
     bool valid2 = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path2, wind, desired_speed, max_kappa, true);
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path2);
-    // ROS_INFO("Value numerical: %f", value_new);
-    // EXPECT_TRUE(abs(value_new - 748.1) < 2);
     EXPECT_TRUE(abs(value_new - 1470.25) < 2);
-    // std::cout <`< "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/failure13_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "dubins_v_numerical1_exhaustive.csv";
-    // path_to_file(trochoid_path2, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::string csv_save1 = std::string(HOME_PATH) + "dubins_v_numerical1.csv";
-    // path_to_file(trochoid_path, csv_save1);
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure13_new.csv";
-    // path_to_file(trochoid_path, csv_save1);
+
     EXPECT_TRUE(abs(value_new - 1470.25) < 2);
-    // ROS_INFO("Value new: %f", value_new);
 }
 
 TEST_F(TrochoidTestFixture, DISABLED_dubins_v_numerical2)
@@ -901,25 +859,16 @@ TEST_F(TrochoidTestFixture, DISABLED_dubins_v_numerical2)
     bool valid2 = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path2, wind, desired_speed, max_kappa, true);
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path2);
-    // ROS_INFO("Value numerical: %f", value_new);
-    // EXPECT_TRUE(abs(value_new - 748.1) < 2);
+
     EXPECT_TRUE(abs(value_new - 1012.38) < 2);
-    // std::cout <`< "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/failure13_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "dubins_v_numerical2_exhaustive.csv";
-    // path_to_file(trochoid_path2, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure13_new.csv";
-    // path_to_file(trochoid_path, csv_save1);
+
     EXPECT_TRUE(abs(value_new - 1012.38) < 2);
-    // std::string csv_save1 = std::string(HOME_PATH) + "dubins_v_numerical2.csv";
-    // path_to_file(trochoid_path, csv_save1);
-    // ROS_INFO("Value new: %f", value_new);
 }
 
 TEST_F(TrochoidTestFixture, failure_case14)
@@ -934,24 +883,20 @@ TEST_F(TrochoidTestFixture, failure_case14)
     desired_speed = 50;
     max_kappa = 0.00358801;
 
-    // std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid2 = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Value numerical: %f", value_new);
     EXPECT_TRUE(abs(value_new - 1064.37) < 2);
     std::string csv_save = std::string(HOME_PATH) + "failure14_numerical.csv";
-    // path_to_file(trochoid_path2, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Value analytical: %f", value_new);
+
     EXPECT_TRUE(abs(value_new - 1064.37) < 2);
     std::string csv_save1 = std::string(HOME_PATH) + "failure14.csv";
-    // path_to_file(trochoid_path, csv_save1);
 }
 
 TEST_F(TrochoidTestFixture, DISABLED_decision_point_func_save14)
@@ -1004,25 +949,15 @@ TEST_F(TrochoidTestFixture, failure_case15)
     bool valid2 = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path2, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path2);
-    // ROS_INFO("Value numerical: %f", value_new);
-    // EXPECT_TRUE(abs(value_new - 748.1) < 2);
     EXPECT_TRUE(abs(value_new - 490.034) < 2);
-    // std::cout <`< "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/failure13_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "failure15_numerical.csv";
-    // path_to_file(trochoid_path2, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure13_new.csv";
-    // path_to_file(trochoid_path, csv_save1);
+
     EXPECT_TRUE(abs(value_new - 490.034) < 2);
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure15.csv";
-    // path_to_file(trochoid_path, csv_save1);
-    // ROS_INFO("Value new: %f", value_new);
 }
 
 TEST_F(TrochoidTestFixture, DISABLED_decision_point_func_save15)
@@ -1076,25 +1011,16 @@ TEST_F(TrochoidTestFixture, failure_case16)
     bool valid2 = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path2, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path2);
-    // ROS_INFO("Value numerical: %f", value_new);
-    // EXPECT_TRUE(abs(value_new - 748.1) < 2);
+
     EXPECT_TRUE(abs(value_new - 358) < 2);
-    // std::cout << "value_numerical: " << value_new << std::endl;
-    // path_to_file(trochoid_path2, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/failure13_numerical.csv");
-    // std::string csv_save = std::string(HOME_PATH) + "failure16_numerical.csv";
-    // path_to_file(trochoid_path2, csv_save);
 
     trochoid_path.clear();
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     EXPECT_TRUE(valid); 
     if (valid)
         value_new = trochoids::get_length(trochoid_path);
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure13_new.csv";
-    // path_to_file(trochoid_path, csv_save1);
+
     EXPECT_TRUE(abs(value_new - 358) < 2);
-    // std::string csv_save1 = std::string(HOME_PATH) + "failure16.csv";
-    // path_to_file(trochoid_path, csv_save1);
-    // ROS_INFO("Value new: %f", value_new);
 }
 
 TEST_F(TrochoidTestFixture, DISABLED_decision_point_func_save16)

@@ -16,6 +16,7 @@ browse.vc.db
 .idea/
 test_trochoids*
 *.m~
+build
 
 __pycache__
 *.pyc

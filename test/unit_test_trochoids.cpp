@@ -1,17 +1,50 @@
-// /*
-// Modified by Sagar Sachdev on 11/22/22
-// */
+/*********************************************************************
+    The Clear BSD License
+
+    Copyright (c) 2023, AirLab
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted (subject to the limitations in the disclaimer
+    below) provided that the following conditions are met:
+
+        * Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+        * Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+        * Neither the name of the copyright holder nor the names of its
+        contributors may be used to endorse or promote products derived from this
+        software without specific prior written permission.
+
+    NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY
+    THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+    CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+    PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+    BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+    IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+*********************************************************************/
+
+/* Authors: Sagar Sachdev, Brady Moon*/
 
 #include <gtest/gtest.h>
-#include "trochoids/trochoid_utils.h"
-#include <iostream>
-#include "unit_test_trochoid_classification.cpp"
-#include "trochoids/trochoids.h"
-#include <tf2/LinearMath/Quaternion.h>
-#include <fstream>
 #include <chrono>
 #include <random>
-#include "ros/ros.h"
+#include <iostream>
+
+#include "trochoids/trochoid_utils.h"
+#include "unit_test_trochoid_classification.cpp"
+#include "trochoids/trochoids.h"
+
+
 
 std::vector<int> helper_fxn(std::vector<trochoids::XYZPsiState> &trochoid_path)
 {
@@ -88,8 +121,7 @@ TEST(TestTrochoids, trochoid_analytical_straight)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_straight_analytical.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1000) < 11);
 }
@@ -107,15 +139,12 @@ TEST(TestTrochoids, trochoid_numerical_straight)
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
 
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_straight_numerical.csv");
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1000) < 11);
 
     trochoid_path.clear();
     bool valid_exhaustive_only = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa, true);
     double dist_exhaustive_only = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist_exhaustive_only);
     EXPECT_TRUE(valid_exhaustive_only);
     EXPECT_TRUE(abs(dist_exhaustive_only - 1000) < 11);
     EXPECT_TRUE(abs(dist - dist_exhaustive_only) < 1);
@@ -133,8 +162,7 @@ TEST(TestTrochoids, trochoid_analytical_straight_y)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_straight_analytical_y.csv");
+    
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1085) < 11);
 }
@@ -151,8 +179,7 @@ TEST(TestTrochoids, trochoid_numerical_straight_y)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_straight_numerical_y.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1085) < 11);
 
@@ -175,11 +202,9 @@ TEST(TestTrochoids, trochoid_large_radius_analytical)
     trochoids::XYZPsiState goal_state = {50, 100, 0, 0.2};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_analytical.csv");
+
     EXPECT_TRUE(abs(dist - 6352) < 11);
     EXPECT_TRUE(valid);
 }
@@ -194,11 +219,9 @@ TEST(TestTrochoids, trochoid_large_radius_numerical)
     trochoids::XYZPsiState goal_state = {50, 100, 0, 0.2};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_numerical.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 6353) < 11);
 
@@ -222,9 +245,7 @@ TEST(TestTrochoids, trochoid_test_max_kappa_limit_analytical)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa)
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_test_max_kappa_limit_analytical.csv");
+
     EXPECT_TRUE(abs(dist - 118) < 11);
     EXPECT_TRUE(valid);
 }
@@ -242,8 +263,7 @@ TEST(TestTrochoids, trochoid_test_max_kappa_limit_numerical)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_test_max_kappa_limit_numerical.csv");
+
     EXPECT_TRUE(abs(dist - 118) < 11);
     EXPECT_TRUE(valid);
 
@@ -268,9 +288,7 @@ TEST(TestTrochoids, trochoid_large_radius_slow_analytical)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // std::cout <<" X value is now: " <<trochoid_path.getState(0)->as<XYZPsiStateSpace::StateType>()->getX() << std::endl;
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_slow_analytical.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 6353) < 11);
 }
@@ -288,9 +306,7 @@ TEST(TestTrochoids, trochoid_large_radius_slow_numerical)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // auto size = trochoid_path.getStateCount();
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_slow_numerical.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 6353) < 11);
      
@@ -313,11 +329,9 @@ TEST(TestTrochoids, trochoid_analytical_rsr)
     trochoids::XYZPsiState goal_state = {1000, 1000, 0, 0};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_rsr_analytical.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1425) < 11);
 }
@@ -333,18 +347,15 @@ TEST(TestTrochoids, trochoid_test_ccc_numerical)
     trochoids::XYZPsiState goal_state = {-236.114, 541.739, 0, 1.29849};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_test_ccc_numerical.csv");
+
     EXPECT_TRUE(valid);
 
     trochoid_path.clear();
     valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa, true);
     dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_test_ccc_numerical_exhaustive.csv");
+
     EXPECT_TRUE(valid);
 }
 
@@ -361,8 +372,7 @@ TEST(TestTrochoids, trochoid_test_ccc_analytical)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_test_ccc_analytical.csv");
+
     EXPECT_TRUE(valid);
 }
 
@@ -379,8 +389,7 @@ TEST(TestTrochoids, trochoid_rsr_numerical)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_rsr_numerical.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1425) < 11);
 
@@ -403,11 +412,9 @@ TEST(TestTrochoids, trochoid_analytical_rsl)
     trochoids::XYZPsiState goal_state = {1000, 1000, 0, 1.5707};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_rsl_analytical.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1425) < 11);
 }
@@ -423,11 +430,9 @@ TEST(TestTrochoids, trochoid_numerical_rsl)
     trochoids::XYZPsiState goal_state = {1000, 1000, 0, 1.5707};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_rsl_numerical.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1425) < 11);
 
@@ -472,14 +477,12 @@ TEST(TestTrochoids, trochoid_dubins_matrix_test)
 
         if (abs(dubins_matrix_path_length - dubins_path_length) > 1e-5)
         {
-            ROS_INFO("Dubins Matrix Path Length: %f", dubins_matrix_path_length);
-            ROS_INFO("Dubins Path Length: %f", dubins_path_length);
-            // ROS_INFO("Start: %f, %f, %f", start_n->getX(), start_n->getY(), start_n->getPsi());
-            // ROS_INFO("Goal: %f, %f, %f", goal_n->getX(), goal_n->getY(), goal_n->getPsi());
-            ROS_INFO("Max_Kappa: %f", max_kappa);
+            std::cout << "Dubins Matrix Path Length: " << dubins_matrix_path_length << std::endl;
+            std::cout << "Dubins Path Length: " << dubins_path_length << std::endl;
+            std::cout << "Max_Kappa: " << max_kappa << std::endl;
 
-            ROS_INFO("Dubins Matrix Path Type: %d, %d, %d", dubins_path_matrix.type_[0], dubins_path_matrix.type_[1], dubins_path_matrix.type_[2]);
-            ROS_INFO("Dubins Path Type: %d, %d, %d", dubins_path.type_[0], dubins_path.type_[1], dubins_path.type_[2]);
+            std::cout << "Dubins Matrix Path Type: " << dubins_path_matrix.type_[0] << ", " << dubins_path_matrix.type_[1] << ", " << dubins_path_matrix.type_[2] << std::endl;
+            std::cout << "Dubins Path Type: " << dubins_path.type_[0] << ", " << dubins_path.type_[1] << ", " << dubins_path.type_[2] << std::endl;
         }
     }
 }
@@ -498,11 +501,9 @@ TEST(TestTrochoids, trochoid_large_radius_analytical_wind)
     trochoids::XYZPsiState goal_state = {50, 100, 0, 0.2};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_analytical_wind.csv");
+
     EXPECT_TRUE(abs(dist - 7394) < 11);
     EXPECT_TRUE(valid);
 
@@ -524,11 +525,9 @@ TEST(TestTrochoids, trochoid_large_radius_numerical_wind)
     trochoids::XYZPsiState goal_state = {50, 100, 0, 0.2};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_numerical_wind.csv");
+
     EXPECT_TRUE(abs(dist - 7394) < 11);
     EXPECT_TRUE(valid);
 
@@ -552,9 +551,7 @@ TEST(TestTrochoids, trochoid_test_max_kappa_limit_analytical_wind)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa)
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_test_max_kappa_limit_analytical_wind.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 116) < 11);
 }
@@ -572,8 +569,7 @@ TEST(TestTrochoids, trochoid_test_max_kappa_limit_numerical_wind)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_test_max_kappa_limit_numerical_wind.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 116) < 11);
 
@@ -598,12 +594,9 @@ TEST(TestTrochoids, trochoid_large_radius_slow_analytical_wind)
 
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // std::cout <<" X value is now: " <<trochoid_path.getState(0)->as<XYZPsiStateSpace::StateType>()->getX() << std::endl;
-    // ROS_INFO("Distance: %f", dist);
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 8473) < 11);
-    
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_slow_analytical_wind.csv");
 }
 
 TEST(TestTrochoids, trochoid_large_radius_slow_numerical_wind)
@@ -619,10 +612,9 @@ TEST(TestTrochoids, trochoid_large_radius_slow_numerical_wind)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 8473) < 11);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_slow_numerical_wind.csv");
 
     trochoid_path.clear();
     bool valid_exhaustive_only = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa, true);
@@ -648,8 +640,7 @@ TEST(TestTrochoids, trochoid_analytical_straight_altitude)
     std::vector<trochoids::XYZPsiState> trochoid_path; 
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_straight_analytical_altitude.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1000) < 11);
 }
@@ -667,8 +658,7 @@ TEST(TestTrochoids, trochoid_numerical_straight_altitude)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_straight_numerical_altitude.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1000) < 11);
 
@@ -692,11 +682,9 @@ TEST(TestTrochoids, trochoid_large_radius_analytical_altitude)
     trochoids::XYZPsiState goal_state = {50, 100, 50, 0.2};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_analytical_altitude.csv");
+
     EXPECT_TRUE(abs(dist - 6352) < 11);
     EXPECT_TRUE(valid);
 }
@@ -711,11 +699,9 @@ TEST(TestTrochoids, trochoid_large_radius_numerical_altitude)
     trochoids::XYZPsiState goal_state = {50, 100, 50, 0.2};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_numerical_altitude.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 6353) < 11);
 
@@ -739,9 +725,7 @@ TEST(TestTrochoids, trochoid_test_max_kappa_limit_analytical_altitude)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa)
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_test_max_kappa_limit_analytical_altitude.csv");
+
     EXPECT_TRUE(abs(dist - 130) < 11);
     EXPECT_TRUE(valid);
 }
@@ -759,15 +743,13 @@ TEST(TestTrochoids, trochoid_test_max_kappa_limit_numerical_altitude)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_test_max_kappa_limit_numerical_altitude.csv");
+   
     EXPECT_TRUE(abs(dist - 130) < 11);
     EXPECT_TRUE(valid);
 
     trochoid_path.clear();
     bool valid_exhaustive_only = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa, true);
     double dist_exhaustive_only = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist_exhaustive_only);
     EXPECT_TRUE(valid_exhaustive_only);
     EXPECT_TRUE(abs(dist_exhaustive_only - 130) < 11);
     EXPECT_TRUE(abs(dist - dist_exhaustive_only) < 1);
@@ -788,9 +770,7 @@ TEST(TestTrochoids, trochoid_large_radius_slow_analytical_altitude)
 
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // std::cout <<" X value is now: " <<trochoid_path.getState(0)->as<XYZPsiStateSpace::StateType>()->getX() << std::endl;
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_slow_analytical_altitude.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 6353) < 11);
 }
@@ -808,8 +788,7 @@ TEST(TestTrochoids, trochoid_large_radius_slow_numerical_altitude)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/trochoid_large_radius_slow_numerical_altitude.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 6353) < 11);
 
@@ -835,8 +814,7 @@ TEST(TestTrochoids, trochoid_analytical_rsr_altitude)
     // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_rsr_analytical_altitude.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1430) < 11);
 }
@@ -854,8 +832,7 @@ TEST(TestTrochoids, trochoid_rsr_numerical_altitude)
     std::vector<trochoids::XYZPsiState> trochoid_path;
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_rsr_numerical_altitude.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1430) < 11);
 
@@ -878,11 +855,9 @@ TEST(TestTrochoids, trochoid_analytical_rsl_altitude)
     trochoids::XYZPsiState goal_state = {1000, 1000, 50, 1.5707};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_rsl_analytical_altitude.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1431) < 11);
 }
@@ -898,11 +873,9 @@ TEST(TestTrochoids, trochoid_numerical_rsl_altitude)
     trochoids::XYZPsiState goal_state = {1000, 1000, 50, 1.5707};
 
     std::vector<trochoids::XYZPsiState> trochoid_path;
-    // double dist = trochoids::get_length(start_n.get(), goal_n.get(), wind, desired_speed, max_kappa);
     bool valid = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test_trochoids_rsl_numerical_altitude.csv");
+
     EXPECT_TRUE(valid);
     EXPECT_TRUE(abs(dist - 1431) < 11);
 
@@ -1273,12 +1246,7 @@ TEST(TestTrochoids, test1)
     trochoid_path.clear();
     bool valid2 = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double value2 = trochoids::get_length(trochoid_path);
-    // ROS_INFO("Distance: %f", dist);
-    // ROS_INFO_STREAM("VALUE 1: " << value);
-    // ROS_INFO_STREAM("VALUE 2: " << value2);
-    // std::vector<int> path_type = helper_fxn(trochoid_path);
-    // std::cout << path_type[0] << ", " << path_type[1] << ", " << path_type[2] << std::endl;
-    // path_to_file(trochoid_path, "/home/sagar/ipp_ws/src/trochoids/test/csv_files/test1.csv");
+
     EXPECT_TRUE(valid);
 }
 
@@ -1438,21 +1406,15 @@ TEST(TestTrochoids, trochoid_analytical_failure_case1)
     bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist = trochoids::get_length(trochoid_path);
     
-    // path_to_file(trochoid_path, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure1_analytical.csv");
     EXPECT_TRUE(valid);
-    // EXPECT_TRUE(abs(dist - 3287) < 11);
 
     trochoid_path.clear();
     bool valid_numerical = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
     double dist_numerical;
     if (valid_numerical)
         dist_numerical = trochoids::get_length(trochoid_path);
-    // path_to_file(trochoid_path, "/home/moon/code/onr_ws/src/trochoids/test/csv_files/failure1_numerical.csv");
     EXPECT_TRUE(valid_numerical);
-    // EXPECT_TRUE(abs(dist_numerical - 3287) < 11);
     EXPECT_TRUE((dist - dist_numerical) < 1);
-    // std::cout << "Analytical dist: " << dist << std::endl;
-    // std::cout << "Numerical dist: " << dist_numerical << std::endl;
 }
 
 
@@ -1504,9 +1466,7 @@ TEST(TestTrochoidsDecimation, test_decimation_by_distance)
             {
                 std::cout << "Distance: " << dist << std::endl;
                 std::cout << "Max kappa: " << max_kappa << std::endl;
-                // std::cout << "Start: " << start_n->getXYZ().transpose() << std::endl;
                 std::cout << "Start psi: " << start_state.psi << std::endl;
-                // std::cout << "Goal: " << goal_n->getXYZ().transpose() << std::endl;
                 std::cout << "Goal psi: " << goal_state.psi << std::endl;
             }
         }
@@ -1521,9 +1481,7 @@ TEST(TestTrochoidsDecimation, test_decimation_by_distance)
             std::cout << "Start psi: " << start_state.psi << std::endl;
             std::cout << "Goal: " << goal_state.x << ", " << goal_state.y << ", " << goal_state.z << std::endl;
             std::cout << "Goal psi: " << goal_state.psi << std::endl;
-            
             std::cout << "Final dist: " << final_dist << std::endl;
-
             std::cout << "Final: " << trochoid_path2[trochoid_path2.size() - 1].x << ", " << trochoid_path2[trochoid_path2.size() - 1].y << ", " << trochoid_path2[trochoid_path2.size() - 1].z << ", " << trochoid_path2[trochoid_path2.size() - 1].psi << std::endl;
         }
         
@@ -1567,19 +1525,12 @@ TEST(TestTrochoidsDecimation, test_decimation_by_distance)
             std::cout << "Final: " << trochoid_path2[trochoid_path2.size() - 1].x << ", " << trochoid_path2[trochoid_path2.size() - 1].y << ", " << trochoid_path2[trochoid_path2.size() - 1].z << ", " <<  trochoid_path2[trochoid_path2.size() - 1].psi << std::endl;
         }
 
-        // check the distance between the points
-        // std::string csv_save1 = std::string(HOME_PATH) + "decimate1.csv";
-        // std::string csv_save2 = std::string(HOME_PATH) + "decimate2.csv";
-        // path_to_file(trochoid_path, csv_save1);
-        // path_to_file(trochoid_path2, csv_save2);
     }
 }
 
 
-// // Run all the tests that were declared with TEST()
+// Run all the tests that were declared with TEST()
 int main(int argc, char **argv){
     testing::InitGoogleTest(&argc, argv);
-    // ros::init(argc, argv, "tester");
-    // ros::NodeHandle nh;
     return RUN_ALL_TESTS();
 }
