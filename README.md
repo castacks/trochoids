@@ -41,6 +41,8 @@ compute higher-quality paths.
 * Ubuntu 18.04 or 20.04
 * ROS Melodic or Noetic 
 * Python 3.6+ (For visualizations)
+* Google Benchmark (For benchmarks)
+    * `sudo apt-get install libbenchmark-dev`
 
 ### Building and Installation
 * Clone this repo in your preferred directory

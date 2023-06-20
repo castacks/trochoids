@@ -70,16 +70,16 @@ RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
 
 ## Add gtest based cpp test target and link libraries
 if(CATKIN_ENABLE_TESTING)
-  add_executable(${PROJECT_NAME}-test test/unit_test_trochoids.cpp
+  catkin_add_gtest(${PROJECT_NAME}-test test/unit_test_trochoids.cpp
                                         src/trochoids.cpp
                                         src/trochoid_utils.cpp
   )
   if(TARGET ${PROJECT_NAME}-test)
-    target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME} ${catkin_LIBRARIES} ${OMPL_LIBRARIES} GTest::gtest_main)
+    target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME} ${catkin_LIBRARIES} )
   endif()
 
   find_package(benchmark REQUIRED)
   add_executable(${PROJECT_NAME}-benchmark test/all_benchmarks.cpp)
-  target_link_libraries(${PROJECT_NAME}-benchmark ${PROJECT_NAME} ${catkin_LIBRARIES} ${OMPL_LIBRARIES} benchmark::benchmark)
+  target_link_libraries(${PROJECT_NAME}-benchmark ${PROJECT_NAME} ${catkin_LIBRARIES} benchmark::benchmark)
 endif(CATKIN_ENABLE_TESTING)
 
