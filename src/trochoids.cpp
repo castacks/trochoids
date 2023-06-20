@@ -330,15 +330,12 @@ std::vector<std::pair<double, double>> trochoids::Trochoid::trochoid_classificat
 
             double best_length = std::numeric_limits<double>::infinity();
             double xd = xf - decision_points[i];
-            // solve for the time to reach the decision point
-            // Swap out for just dubins_matrix
-            // dubins_solve(psi1_trochoidal, psi2_trochoidal,
-            //             x0, xd,
-            //             y0, yf, best_length, final_path);
 
+            // solve for the time to reach the decision point
             Dubins::DubinsStateSpace::DubinsState goal = {xd, yf, psi2_trochoidal};
 
             dubins_path = dubins_path_obj.dubins_matrix(start, goal);
+            // dubins_path = dubins_path_obj.dubins(start, goal);
             
             double length = dubins_path.length()*turn_radius;
 
