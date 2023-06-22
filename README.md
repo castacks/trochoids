@@ -2,7 +2,7 @@
 # Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification 
 
 This repository contains code for the paper
-**<a href="#">Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification</a>**  
+**<a href="https://arxiv.org/abs/2306.11845">Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification</a>**  
 *<a href="https://sagars2.com">Sagar Sachdev\*</a>,
 <a href="https://bradymoon.com">Brady Moon\*</a>,
 <a href="https://theairlab.org/team/junbiny/">Junbin Yuan</a>,
@@ -98,5 +98,12 @@ bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path
 ## Citation
 If you find this work useful, please cite our paper:
 ```
-
+@article{sachdev2023timeoptimal,
+        title={Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification}, 
+        author={Sagar Sachdev and Brady Moon and Junbin Yuan and Sebastian Scherer},
+        year={2023},
+        eprint={2306.11845},
+        archivePrefix={arXiv},
+        primaryClass={cs.RO}
+}
 ```
