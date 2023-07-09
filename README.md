@@ -45,25 +45,37 @@ compute higher-quality paths.
     * `sudo apt-get install libbenchmark-dev`
 
 ### Building and Installation
-* Clone this repo in your preferred directory
+
+Clone this repo in your catkin workspace or create a new workspace like in the following:
+
+```bash
+mkdir -p ~/trochoids_ws/src
+cd  ~/trochoids_ws/src
+git clone git@github.com:castacks/trochoids.git
+cd ../
+catkin build
 ```
-git clone git@bitbucket.org:castacks/trochoids.git
-cd trochoids
-```
-* To build the unit tests and run them (optional), please run the following commands:
-```
+
+### Building and Running Unit Tests
+
+To build the unit tests and run them (optional), run the following command:
+
+```bash
 catkin build --make-args tests
-source devel/setup.bash
 ```
-Source the workspace (zsh version)
-```
-source devel/setup.zsh
+
+Source the workspace.
+
+```bash
+source devel/setup.bash # devel/setup.zsh if using zsh
 ```
 And then launch the unit tests with
-```
+
+```bash
 roslaunch trochoids unit_test.launch
 ```
-This will run all the unit tests contained in unit_test_trochoid.cpp and unit_test_trochoid_classification.cpp. Examples of code usage can be found in the unit tests or details below.
+
+This will run all the unit tests contained in unit_test_trochoid.cpp and unit_test_trochoid_classification.cpp. Examples of code usage can be found in the unit tests or in the following section.
 
 ## Usage
 
