@@ -460,6 +460,9 @@ TEST(TestTrochoids, trochoid_dubins_matrix_test)
 
     for (int i = 0; i < 100; i++)
     {   
+        if(i % 1000 == 0 && i != 0)
+            std::cout << "Iteration number: " << i << std::endl;
+
         max_kappa = kappaRange(gen);
         
         Dubins::DubinsStateSpace::DubinsState start_state = {disRange(gen), disRange(gen), disPhi(gen)};
@@ -910,6 +913,9 @@ TEST(TestTrochoids, trochoid_compare_methods_random_analytical)
 
     for (int i = 0; i < 100; i++)
     {   
+        if(i % 1000 == 0 && i != 0)
+            std::cout << "Iteration number: " << i << std::endl;
+        
         max_kappa = kappaRange(gen);
         Dubins::DubinsStateSpace::DubinsState start_state = {disRange(gen), disRange(gen), disPhi(gen)};
         Dubins::DubinsStateSpace::DubinsState goal_state = {disRange(gen), disRange(gen), disPhi(gen)};

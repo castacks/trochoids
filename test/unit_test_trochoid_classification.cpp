@@ -466,7 +466,7 @@ TEST_F(TrochoidTestFixture, failure_case2)
     EXPECT_TRUE(valid2);
     double value_new = trochoids::get_length(trochoid_path);
     EXPECT_TRUE(abs(value_new - 1194) < 2);
-    std::cout << "value_new: " << value_new << std::endl;
+    // std::cout << "value_new: " << value_new << std::endl;
 
 
     trochoid_path.clear();
@@ -474,7 +474,7 @@ TEST_F(TrochoidTestFixture, failure_case2)
     EXPECT_TRUE(valid); 
     value_new = trochoids::get_length(trochoid_path);
     EXPECT_TRUE(abs(value_new - 1194) < 2);
-    std::cout << "value_new: " << value_new << std::endl;
+    // std::cout << "value_new: " << value_new << std::endl;
 }
 
 TEST_F(TrochoidTestFixture, failure_case3)
