@@ -271,20 +271,46 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
             DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
             DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
-            if(dubinsrsr.length() < dubinsrsl.length())
+            double S13 = dubinsrsr.length_[0] - M_PI;
+            double S12 = dubinsrsr.length_[1] - dubinsrsl.length_[1] - 2*(dubinsrsl.length_[2] - M_PI);
+
+            if (S13 <= 0)
             {
-                if(dubinsrsr.length() < dubinslsr.length())
-                    return dubinsrsr;
-                else
-                    return dubinslsr;
-            }
-            else
-            {
-                if(dubinslsr.length() < dubinsrsl.length())
-                    return dubinslsr;
-                else
+                if(S12 > 0)
+                {
                     return dubinsrsl;
+                }
+                else
+                {
+                    return dubinsrsr;
+                }
             }
+            else 
+            {
+                if(dubinsrsl.length() < dubinslsr.length())
+                {
+                    return dubinsrsl;
+                }
+                else
+                {
+                    return dubinslsr;
+                }
+            }
+        }
+            // if(dubinsrsr.length() < dubinsrsl.length())
+            // {
+            //     if(dubinsrsr.length() < dubinslsr.length())
+            //         return dubinsrsr;
+            //     else
+            //         return dubinslsr;
+            // }
+            // else
+            // {
+            //     if(dubinslsr.length() < dubinsrsl.length())
+            //         return dubinslsr;
+            //     else
+            //         return dubinsrsl;
+            // }
             // Commenting out switching function approach for this equivalency group
             // double p_rsr = dubinsrsr.length_[1];
             // double p_rsl = dubinsrsl.length_[1];
@@ -302,7 +328,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             // {
             //     return Dubins::dubins(d, alpha, beta);
             // }
-        }
+        // }
         else if (init_quadrant == 1 && final_quadrant == 3)
         {
             DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
