@@ -2,12 +2,9 @@
 # Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification 
 
 This repository contains code for the paper
-**<a href="https://arxiv.org/abs/2306.11845">Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification</a>**  
-*<a href="https://sagars2.com">Sagar Sachdev\*</a>,
-<a href="https://bradymoon.com">Brady Moon\*</a>,
-<a href="https://theairlab.org/team/junbiny/">Junbin Yuan</a>,
-<a href="https://www.ri.cmu.edu/ri-faculty/sebastian-scherer/">Sebastian Scherer</a><br/>
-(\* equal contribution)*
+**<a href="https://arxiv.org/abs/2306.11845">"Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification"</a>**  by *<a href="https://sagars2.com">Sagar Sachdev\*</a>, <a href="https://bradymoon.com">Brady Moon\*</a>, <a href="https://theairlab.org/team/junbiny/">Junbin Yuan</a>, and <a href="https://www.ri.cmu.edu/ri-faculty/sebastian-scherer/">Sebastian Scherer</a> (\* equal contribution)*.
+
+This codebase includes both a solver for trochoidal paths when there is wind as well as also solving Dubins paths when there is no wind. The Dubins path solutions use the work <a href="http://dx.doi.org/10.1016/S0921-8890(00)00127-5">"Classification of the Dubins set"</a> as well as the correction proposed in the work  <a href="https://www.research-collection.ethz.ch/handle/20.500.11850/615185">"Circling Back: Dubins set Classification Revisited."</a>
 
 <p align="center">   
     <img src="img/Fig1v7-2.png" alt="drawing" style="width:50%;"/>

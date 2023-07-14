@@ -5,6 +5,8 @@ on:
     branches:
         - master
         - develop
+        - pipeline-test
+        - modified_dubins
   pull_request:
     types: [opened, reopened]
     branches:
@@ -39,10 +41,7 @@ jobs:
       run: |
         source /opt/ros/melodic/setup.bash
         source ws/devel/setup.bash
-        roscore &
-        sleep 3
         ./ws/devel/lib/trochoids/trochoids-benchmark --benchmark_format=json | tee benchmark_result.json
-        pkill rosmaster
         git config --global user.name "Github Action"
         git config --global user.email "github@github.com"
 
@@ -79,8 +78,6 @@ jobs:
       run: |
         source /opt/ros/melodic/setup.bash
         source ws/devel/setup.bash
-        roscore &
-        sleep 1
         ./ws/devel/lib/trochoids/trochoids-test
 
 
