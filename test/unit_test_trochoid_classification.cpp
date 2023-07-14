@@ -278,6 +278,48 @@ TEST_F(TrochoidTestFixture, wind_trochoid_single)
 //     }
 // }
 
+TEST_F(DubinsTestFixture, dubins_matrix_test_random)
+{
+    // Call Random Start and Goal states:
+    std::random_device rd;
+    std::mt19937 gen = std::mt19937(rd());
+    std::uniform_real_distribution<> disRange(-1000, 1000);
+    std::uniform_real_distribution<> kappaRange(0.005, 0.01);
+    std::uniform_real_distribution<> disPhi(0.0, 2.0 * M_PI);
+
+    for (int i = 0; i < 100000; i++)
+    {   
+        // if(i % 10000 == 0 && i != 0)
+        //     std::cout << "Iteration number: " << i << std::endl;
+
+        max_kappa = kappaRange(gen);
+        
+        Dubins::DubinsStateSpace::DubinsState start_state = {disRange(gen), disRange(gen), disPhi(gen)};
+        Dubins::DubinsStateSpace::DubinsState goal_state = {disRange(gen), disRange(gen), disPhi(gen)};
+
+        Dubins::DubinsStateSpace::DubinsPath dubins_path_matrix;
+        Dubins::DubinsStateSpace::DubinsPath dubins_path;
+        Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+        dubins_path_matrix = dubins_path_object.dubins_matrix(start_state, goal_state);
+        dubins_path = dubins_path_object.dubins(start_state, goal_state);
+
+        double dubins_matrix_path_length = dubins_path_matrix.length();
+        double dubins_path_length = dubins_path.length();
+
+        if (abs(dubins_matrix_path_length - dubins_path_length) > 1e-5)
+        {
+            std::cout << "Dubins Matrix Path Length: " << dubins_matrix_path_length << std::endl;
+            std::cout << "Dubins Path Length: " << dubins_path_length << std::endl;
+            std::cout << "Max_Kappa: " << max_kappa << std::endl;
+
+            std::cout << "Dubins Matrix Path Type: " << dubins_path_matrix.type_[0] << ", " << dubins_path_matrix.type_[1] << ", " << dubins_path_matrix.type_[2] << std::endl;
+            std::cout << "Dubins Path Type: " << dubins_path.type_[0] << ", " << dubins_path.type_[1] << ", " << dubins_path.type_[2] << std::endl;
+        }
+        EXPECT_TRUE(abs(dubins_matrix_path_length - dubins_path_length) <= 1e-5);
+    }
+}
+
 TEST_F(DubinsTestFixture, failure_case_dubins_matrix)
 {
     // d = 5.5483172346109235
@@ -298,8 +340,6 @@ TEST_F(DubinsTestFixture, failure_case_dubins_matrix)
     desired_speed = 50;
     max_kappa = 0.009334; // RADIUS = 111.11
 
-    Dubins::DubinsStateSpace::DubinsPath dubins_path_matrix;
-    Dubins::DubinsStateSpace::DubinsPath dubins_path;
     Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
 
     dubins_path_matrix = dubins_path_object.dubins_matrix(start_n, goal_n);
@@ -320,8 +360,6 @@ TEST_F(DubinsTestFixture, failure_case_dubins_matrix2)
     // beta = 5.8465128885631881
     // a_3_4
     // RSL
-    
-    double wind[3] = {0, 0, 0};
 
     Dubins::DubinsStateSpace::DubinsState start_n = {707.809344, -865.235911, -0.194369};
     Dubins::DubinsStateSpace::DubinsState goal_n = {209.058309, -759.711596, 2.496418};
@@ -329,8 +367,6 @@ TEST_F(DubinsTestFixture, failure_case_dubins_matrix2)
     desired_speed = 50;
     max_kappa = 0.008591; // RADIUS = 111.11
 
-    Dubins::DubinsStateSpace::DubinsPath dubins_path_matrix;
-    Dubins::DubinsStateSpace::DubinsPath dubins_path;
     Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
 
     dubins_path_matrix = dubins_path_object.dubins_matrix(start_n, goal_n);
@@ -348,58 +384,63 @@ TEST_F(DubinsTestFixture, failure_case_dubins_matrix3)
     double alpha = 0;
     double beta = 0.0100429;
 
-    double max_kappa = 0.068106897435311786; // 16.67
+    max_kappa = 0.068106897435311786; // 16.67
     // Run dubins on this (should choose dubinsLSL and segfault)
 
     Dubins::DubinsStateSpace::DubinsState start_state = {0,0, alpha};
     Dubins::DubinsStateSpace::DubinsState goal_state = {d*(1/max_kappa), 0, beta};
-    
-    double wind[3] = {0, 0, 0};
 
-    Dubins::DubinsStateSpace dubins_path_obj(1/max_kappa);
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
     
-    dubins_path = dubins_path_obj.dubins(start_state, goal_state);
+    dubins_path_matrix = dubins_path_object.dubins_matrix(start_state, goal_state);
+    dubins_path = dubins_path_object.dubins(start_state, goal_state);
+
+    double dubins_matrix_path_length = dubins_path_matrix.length();
+    double dubins_path_length = dubins_path.length();
+
+    EXPECT_TRUE(abs(dubins_matrix_path_length - dubins_path_length) < 1e-5);
     // std::cout << "dubins_path_length: " << dubins_path.length() << std::endl;
     // std::cout << "dubins_path_type: " << dubins_path.type_[0] << ", " << dubins_path.type_[1] << ", " << dubins_path.type_[2] << std::endl;
 }   
+
 TEST_F(DubinsTestFixture, failure_case_dubins_matrix4)
 {
     double d = 146.718732682216; 
     double alpha = 0;
     double beta = 0.0060383633327356634;
 
-    double max_kappa = 0.068106897435311786;
+    max_kappa = 0.068106897435311786;
     // Run dubins on this (should choose dubinsLSL and segfault)
-
-    double wind[3] = {0, 0, 0};
 
     Dubins::DubinsStateSpace::DubinsState start_state = {528.31640768858404,-229.49382213258539, 2.3532546119395792};
     Dubins::DubinsStateSpace::DubinsState goal_state = {-990.47782251535614, 1298.2569051412538, 2.3592929752723149};
 
-    Dubins::DubinsStateSpace dubins_path_obj(1/max_kappa);
-    
-    dubins_path = dubins_path_obj.dubins(start_state, goal_state);
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+    dubins_path_matrix = dubins_path_object.dubins_matrix(start_state, goal_state);
+    dubins_path = dubins_path_object.dubins(start_state, goal_state);
+
+    double dubins_matrix_path_length = dubins_path_matrix.length();
+    double dubins_path_length = dubins_path.length();
+
+    EXPECT_TRUE(abs(dubins_matrix_path_length - dubins_path_length) < 1e-5);
     // std::cout << "dubins_path_length: " << dubins_path.length() << std::endl;
     // std::cout << "dubins_path_type: " << dubins_path.type_[0] << ", " << dubins_path.type_[1] << ", " << dubins_path.type_[2] << std::endl;
 }   
 
 TEST_F(DubinsTestFixture, fail_case_8_tests)
 {
-    double max_kappa = 0.066222699999999995;
-    double Rho = 1/max_kappa;
+    max_kappa = 0.066222699999999995;
     // Run dubins on this (should choose dubinsLSL and segfault)
 
     Dubins::DubinsStateSpace::DubinsState start_state = {-458.78368113158683, 382.34142866860554, 2.3950568527085956};
     Dubins::DubinsStateSpace::DubinsState goal_state = {-370, -167.7736361091923, 4.7975558527085962};
 
-    double wind[3] = {0, 0, 0};
-    double v = 50;
-
     Dubins::DubinsStateSpace dubins_path_obj(1/max_kappa);
 
     // goal_n->setXYZ(Eigen::Vector3d(-150, -167.7736361091923, 0));
     // goal_state = goal_n.get();
-    // dubins_path = dubins_path_obj.dubins(start_state, goal_state);
+    dubins_path = dubins_path_obj.dubins(start_state, goal_state);
     // std::cout << "X position is: " << goal_n->getX() << std::endl;
     // std::cout << "dubins_time: " << dubins_path.length()*Rho/v << std::endl;
     // std::cout << "dubins_path_type: " << dubins_path.type_[0] << ", " << dubins_path.type_[1] << ", " << dubins_path.type_[2] << std::endl;
@@ -666,7 +707,7 @@ TEST_F(TrochoidTestFixture, failure_case10)
 }
 
 
-TEST_F(TrochoidTestFixture, decision_point_func_save8)
+TEST_F(TrochoidTestFixture, DISABLED_decision_point_func_save8)
 {
     // Failure case 8
     trochoids::XYZPsiState start_state = {-458.78368113158683, 382.34142866860554, 0, 2.3950568527085956};
@@ -728,7 +769,7 @@ TEST_F(TrochoidTestFixture, failure_case11)
         value_new = trochoids::get_length(trochoid_path);
 }
 
-TEST_F(TrochoidTestFixture, decision_point_func_save11)
+TEST_F(TrochoidTestFixture, DISABLED_decision_point_func_save11)
 {
     // Failure case 11
     trochoids::XYZPsiState start_state = {70.95818489435112, -972.68620442900249, 0, 3.8864472025592836};

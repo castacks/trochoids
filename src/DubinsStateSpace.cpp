@@ -270,7 +270,6 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
         {
             DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
             DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
-            DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
             double S13 = dubinsrsr.length_[0] - M_PI;
             double S12 = dubinsrsr.length_[1] - dubinsrsl.length_[1] - 2*(dubinsrsl.length_[2] - M_PI);
 
@@ -287,6 +286,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             }
             else 
             {
+                DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
                 if(dubinsrsl.length() < dubinslsr.length())
                 {
                     return dubinsrsl;
@@ -297,38 +297,6 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                 }
             }
         }
-            // if(dubinsrsr.length() < dubinsrsl.length())
-            // {
-            //     if(dubinsrsr.length() < dubinslsr.length())
-            //         return dubinsrsr;
-            //     else
-            //         return dubinslsr;
-            // }
-            // else
-            // {
-            //     if(dubinslsr.length() < dubinsrsl.length())
-            //         return dubinslsr;
-            //     else
-            //         return dubinsrsl;
-            // }
-            // Commenting out switching function approach for this equivalency group
-            // double p_rsr = dubinsrsr.length_[1];
-            // double p_rsl = dubinsrsl.length_[1];
-            // double q_rsl = dubinsrsl.length_[2];
-            // double S12 = p_rsr - p_rsl - 2*(q_rsl - M_PI);
-            // if (S12 < 0)
-            // {
-            //     return dubinsrsr;
-            // }
-            // else if (S12 > 0)
-            // {
-            //     return dubinsrsl;
-            // }
-            // else 
-            // {
-            //     return Dubins::dubins(d, alpha, beta);
-            // }
-        // }
         else if (init_quadrant == 1 && final_quadrant == 3)
         {
             DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
@@ -349,41 +317,34 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
         }
         else if (init_quadrant == 2 && final_quadrant == 1)
         {
-            DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
             DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
-            DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
+            DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
+            double S31 = dubinslsl.length_[2] - M_PI;
+            double S21 = dubinslsl.length_[1] - dubinsrsl.length_[1] - 2*(dubinsrsl.length_[0] - M_PI);
 
-            if (dubinsrsl.length() < dubinslsl.length())
+            if (S31 <= 0)
             {
-                if (dubinsrsl.length() < dubinslsr.length())
+                if(S21 > 0)
+                {
                     return dubinsrsl;
+                }
                 else
-                    return dubinslsr;
+                {
+                    return dubinslsl;
+                }
             }
             else 
             {
-                if(dubinslsl.length() < dubinslsr.length())
-                    return dubinslsl;
+                DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
+                if(dubinsrsl.length() < dubinslsr.length())
+                {
+                    return dubinsrsl;
+                }
                 else
+                {
                     return dubinslsr;
+                }
             }
-            // Commenting out switching function approach for this equivalency group
-            // double p_lsl = dubinslsl.length_[1];
-            // double p_rsl = dubinsrsl.length_[1];
-            // double t_rsl = dubinsrsl.length_[0];
-            // double S21 = p_lsl - p_rsl - 2*(t_rsl - M_PI);
-            // if (S21 < 0)
-            // {
-            //     return dubinslsl;
-            // }
-            // else if (S21 > 0)
-            // {
-            //     return dubinsrsl;
-            // }
-            // else 
-            // {
-            //     return Dubins::dubins(d, alpha, beta);
-            // }
         }
         else if (init_quadrant == 2 && final_quadrant == 4)
         {
@@ -425,45 +386,30 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
         {
             DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
             DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
-            DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
-            // Commenting out the switching function approach for this equivalency group
-            // double p_rsr = dubinsrsr.length_[1];
-            // double p_lsr = dubinslsr.length_[1];
-            // double t_lsr = dubinslsr.length_[0];
-            // double S34 = p_rsr - p_lsr - 2*(t_lsr - M_PI);
-            // if (S34 < 0)
-            // {
-            //     return dubinsrsr;
-            // }
-            // else if (S34 > 0)
-            // {
-            //     return dubinslsr;
-            // }
-            // else 
-            // {
-            //     return Dubins::dubins(d, alpha, beta);
-            // }
+            double S24 = dubinsrsr.length_[2] - M_PI;
+            double S34 = dubinsrsr.length_[1] - dubinslsr.length_[1] - 2*(dubinslsr.length_[0] - M_PI);
 
-            if (dubinslsr.length() < dubinsrsr.length())
+            if (S24 <= 0)
             {
-                if (dubinslsr.length() < dubinsrsl.length())
+                if(S34 > 0)
                 {
                     return dubinslsr;
                 }
                 else
                 {
-                    return dubinsrsl;
+                    return dubinsrsr;
                 }
             }
-            else
+            else 
             {
-                if (dubinsrsr.length() < dubinsrsl.length())
+                DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
+                if(dubinsrsl.length() < dubinslsr.length())
                 {
-                    return dubinsrsr;
+                    return dubinsrsl;
                 }
                 else
                 {
-                    return dubinsrsl;
+                    return dubinslsr;
                 }
             }
         }
@@ -487,42 +433,34 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
         }
         else if (init_quadrant == 4 && final_quadrant == 3)
         {
-            DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
             DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
-            DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
+            DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
+            double S42 = dubinslsl.length_[0] - M_PI;
+            double S43 = dubinslsl.length_[1] - dubinslsr.length_[1] - 2*(dubinslsr.length_[2] - M_PI); 
 
-            if(dubinslsl.length() < dubinslsr.length())
+            if (S42 <= 0)
             {
-                if(dubinslsl.length() < dubinsrsl.length())
-                    return dubinslsl;
+                if(S43 > 0)
+                {
+                    return dubinslsr;
+                }
                 else
-                    return dubinsrsl;
+                {
+                    return dubinslsl;
+                }
             }
             else 
             {
-                if (dubinslsr.length() < dubinsrsl.length())
-                    return dubinslsr;
-                else
+                DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
+                if(dubinsrsl.length() < dubinslsr.length())
+                {
                     return dubinsrsl;
+                }
+                else
+                {
+                    return dubinslsr;
+                }
             }
-
-            // Commenting out switching function approach for this equivalency group
-            // double p_lsl = dubinslsl.length_[1];
-            // double p_lsr = dubinslsr.length_[1];
-            // double q_lsr = dubinslsr.length_[2];
-            // double S43 = p_lsl - p_lsr - 2*(q_lsr - M_PI);
-            // if (S43 < 0)
-            // {
-            //     return dubinslsl;
-            // }
-            // else if (S43 > 0)
-            // {
-            //     return dubinslsr;
-            // }
-            // else
-            // {
-            //     return Dubins::dubins(d, alpha, beta);
-            // }
         }
         else if (init_quadrant == 1 && final_quadrant == 4)
         {

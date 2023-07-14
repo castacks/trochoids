@@ -444,52 +444,6 @@ TEST(TestTrochoids, trochoid_numerical_rsl)
     EXPECT_TRUE(abs(dist - dist_exhaustive_only) < 1);
 }
 
-TEST(TestTrochoids, trochoid_dubins_matrix_test)
-{
-    // Call Random Start and Goal states:
-    
-    double wind[3] = {0, 0, 0};
-    double desired_speed = 28;
-    double max_kappa = .05;
-
-    std::random_device rd;
-    std::mt19937 gen = std::mt19937(rd());
-    std::uniform_real_distribution<> disRange(-1000, 1000);
-    std::uniform_real_distribution<> kappaRange(0.005, 0.01);
-    std::uniform_real_distribution<> disPhi(0.0, 2.0 * M_PI);
-
-    for (int i = 0; i < 100; i++)
-    {   
-        if(i % 1000 == 0 && i != 0)
-            std::cout << "Iteration number: " << i << std::endl;
-
-        max_kappa = kappaRange(gen);
-        
-        Dubins::DubinsStateSpace::DubinsState start_state = {disRange(gen), disRange(gen), disPhi(gen)};
-        Dubins::DubinsStateSpace::DubinsState goal_state = {disRange(gen), disRange(gen), disPhi(gen)};
-
-        Dubins::DubinsStateSpace::DubinsPath dubins_path_matrix;
-        Dubins::DubinsStateSpace::DubinsPath dubins_path;
-        Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
-
-        dubins_path_matrix = dubins_path_object.dubins_matrix(start_state, goal_state);
-        dubins_path = dubins_path_object.dubins(start_state, goal_state);
-
-        double dubins_matrix_path_length = dubins_path_matrix.length();
-        double dubins_path_length = dubins_path.length();
-
-        if (abs(dubins_matrix_path_length - dubins_path_length) > 1e-5)
-        {
-            std::cout << "Dubins Matrix Path Length: " << dubins_matrix_path_length << std::endl;
-            std::cout << "Dubins Path Length: " << dubins_path_length << std::endl;
-            std::cout << "Max_Kappa: " << max_kappa << std::endl;
-
-            std::cout << "Dubins Matrix Path Type: " << dubins_path_matrix.type_[0] << ", " << dubins_path_matrix.type_[1] << ", " << dubins_path_matrix.type_[2] << std::endl;
-            std::cout << "Dubins Path Type: " << dubins_path.type_[0] << ", " << dubins_path.type_[1] << ", " << dubins_path.type_[2] << std::endl;
-        }
-    }
-}
-
 // /*---------------------------------- Adding tests for different wind speeds ------------------------------------------------------------------*/
 
 // // Check if wind speeds are lower than the desired speed
