@@ -39,6 +39,7 @@
 #define DUBINS_STATE_SPACE_
 
 #include <boost/math/constants/constants.hpp>
+#include <iostream>
 #include <math.h>
 #include <vector>
 
