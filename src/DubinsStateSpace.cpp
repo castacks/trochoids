@@ -195,10 +195,10 @@ namespace Dubins
             path = tmp;
         return path;
     }
-}
+}  // namespace Dubins
 
-const Dubins::DubinsStateSpace::DubinsPathSegmentType Dubins::DubinsStateSpace::dubinsPathType[6][3] = {
-    {DUBINS_LEFT, DUBINS_STRAIGHT, DUBINS_LEFT},
+const Dubins::DubinsStateSpace::DubinsPathSegmentType Dubins::DubinsStateSpace::dubinsPathType[6][3] =
+    {{DUBINS_LEFT, DUBINS_STRAIGHT, DUBINS_LEFT},
     {DUBINS_RIGHT, DUBINS_STRAIGHT, DUBINS_RIGHT},
     {DUBINS_RIGHT, DUBINS_STRAIGHT, DUBINS_LEFT},
     {DUBINS_LEFT, DUBINS_STRAIGHT, DUBINS_RIGHT},
@@ -227,13 +227,13 @@ int Dubins::find_quadrant(double angle)
 {
     angle = mod2pi(angle);
     if (angle >= 0 && angle < M_PI/2)
-        return 1; // first quadrant
+        return 1;  // first quadrant
     else if (angle >= M_PI/2 && angle < M_PI)
-        return 2; // second quadrant
+        return 2;  // second quadrant
     else if (angle >= M_PI && angle < 3*M_PI/2)
-        return 3; // third quadrant
+        return 3;  // third quadrant
     else
-        return 4; // fourth quadrant
+        return 4;  // fourth quadrant
 }
 
 Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(const DubinsState state1,
@@ -275,7 +275,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
 
             if (S13 <= 0)
             {
-                if(S12 > 0)
+                if (S12 > 0)
                 {
                     return dubinsrsl;
                 }
@@ -284,10 +284,10 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                     return dubinsrsr;
                 }
             }
-            else 
+            else
             {
                 DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
-                if(dubinsrsl.length() < dubinslsr.length())
+                if (dubinsrsl.length() < dubinslsr.length())
                 {
                     return dubinsrsl;
                 }
@@ -310,7 +310,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             {
                 return dubinsLSR(d, alpha, beta);
             }
-            else 
+            else
             {
                 return Dubins::dubins(d, alpha, beta);
             }
@@ -324,7 +324,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
 
             if (S31 <= 0)
             {
-                if(S21 > 0)
+                if (S21 > 0)
                 {
                     return dubinsrsl;
                 }
@@ -333,10 +333,10 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                     return dubinslsl;
                 }
             }
-            else 
+            else
             {
                 DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
-                if(dubinsrsl.length() < dubinslsr.length())
+                if (dubinsrsl.length() < dubinslsr.length())
                 {
                     return dubinsrsl;
                 }
@@ -359,10 +359,10 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             {
                 return dubinsRSL(d, alpha, beta);
             }
-            else 
+            else
             {
                 return Dubins::dubins(d, alpha, beta);
-            } 
+            }
         }
         else if (init_quadrant == 3 && final_quadrant == 1)
         {
@@ -377,7 +377,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             {
                 return dubinsLSR(d, alpha, beta);
             }
-            else 
+            else
             {
                 return Dubins::dubins(d, alpha, beta);
             }
@@ -391,7 +391,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
 
             if (S24 <= 0)
             {
-                if(S34 > 0)
+                if (S34 > 0)
                 {
                     return dubinslsr;
                 }
@@ -400,10 +400,10 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                     return dubinsrsr;
                 }
             }
-            else 
+            else
             {
                 DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
-                if(dubinsrsl.length() < dubinslsr.length())
+                if (dubinsrsl.length() < dubinslsr.length())
                 {
                     return dubinsrsl;
                 }
@@ -426,7 +426,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             {
                 return dubinsRSL(d, alpha, beta);
             }
-            else 
+            else
             {
                 return Dubins::dubins(d, alpha, beta);
             }
@@ -436,11 +436,11 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
             DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
             double S42 = dubinslsl.length_[0] - M_PI;
-            double S43 = dubinslsl.length_[1] - dubinslsr.length_[1] - 2*(dubinslsr.length_[2] - M_PI); 
+            double S43 = dubinslsl.length_[1] - dubinslsr.length_[1] - 2*(dubinslsr.length_[2] - M_PI);
 
             if (S42 <= 0)
             {
-                if(S43 > 0)
+                if (S43 > 0)
                 {
                     return dubinslsr;
                 }
@@ -449,10 +449,10 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                     return dubinslsl;
                 }
             }
-            else 
+            else
             {
                 DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
-                if(dubinsrsl.length() < dubinslsr.length())
+                if (dubinsrsl.length() < dubinslsr.length())
                 {
                     return dubinsrsl;
                 }
@@ -482,7 +482,6 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             {
                 return dubinsrsr;
             }
-
         }
         else if (init_quadrant == 2 && final_quadrant == 2)
         {
@@ -507,7 +506,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                 {
                     return dubinsrsl;
                 }
-                else 
+                else
                 {
                     return Dubins::dubins(d, alpha, beta);
                 }
@@ -523,7 +522,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                 {
                     return dubinsrsl;
                 }
-                else 
+                else
                 {
                     return Dubins::dubins(d, alpha, beta);
                 }
@@ -576,7 +575,7 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                     return Dubins::dubins(d, alpha, beta);
                 }
             }
-            else 
+            else
             {
                 return Dubins::dubins(d, alpha, beta);
             }

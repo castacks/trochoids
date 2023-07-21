@@ -39,25 +39,27 @@
 
 typedef std::vector<std::tuple<double, double, double>> Path;
 
-double trochoids::WrapTo2Pi(double a1) {
+double trochoids::WrapTo2Pi(double a1)
+{
   return a1 - 2*M_PI * floor(a1 / (2*M_PI));
 }
 
-double trochoids::WrapToPi(double a1) {
-  int m = ( int ) ( a1/ ( 2*M_PI ) );
+double trochoids::WrapToPi(double a1)
+{
+  int m = static_cast<int>(a1 / (2*M_PI));
   a1 = a1 - m*2*M_PI;
-  if(a1>M_PI)
-    a1-= 2.0*M_PI;
-  else if(a1<-M_PI)
-    a1+=2.0*M_PI;
+  if (a1 > M_PI)
+    a1 -= 2.0*M_PI;
+  else if (a1 < -M_PI)
+    a1 +=2.0*M_PI;
   return a1;
 }
 
-bool trochoids::get_trochoid_path_numerical(const XYZPsiState &s1, 
-                                            const XYZPsiState &s2, 
-                                            std::vector<XYZPsiState> &extended_path_out, 
-                                            const double *wind, 
-                                            double v, 
+bool trochoids::get_trochoid_path_numerical(const XYZPsiState &s1,
+                                            const XYZPsiState &s2,
+                                            std::vector<XYZPsiState> &extended_path_out,
+                                            const double *wind,
+                                            double v,
                                             double max_kappa,
                                             bool exhaustive_solve_only,
                                             double waypoint_distance)
@@ -65,7 +67,7 @@ bool trochoids::get_trochoid_path_numerical(const XYZPsiState &s1,
     trochoids::Trochoid trochoid;
     trochoid.problem.v = v;
     trochoid.problem.wind = {wind[0], wind[1]};
-    trochoid.problem.max_kappa = max_kappa; 
+    trochoid.problem.max_kappa = max_kappa;
     trochoid.problem.X0 = {s1.x, s1.y, s1.psi};
     trochoid.problem.Xf = {s2.x, s2.y, s2.psi};
     Path path = trochoid.getTrochoidNumerical(exhaustive_solve_only, waypoint_distance);
@@ -80,7 +82,7 @@ bool trochoids::get_trochoid_path_numerical(const XYZPsiState &s1,
         new_state.x = std::get<0>(path[i]);
         new_state.y = std::get<1>(path[i]);
         new_state.psi = std::get<2>(path[i]);
-        new_state.z = s1.z + (((double)i) / (double)path.size()) * (s2.z - s1.z);
+        new_state.z = s1.z + ((static_cast<double>(i)) / static_cast<double>(path.size())) * (s2.z - s1.z);
 
         extended_path_out.push_back(new_state);
     }
@@ -88,11 +90,11 @@ bool trochoids::get_trochoid_path_numerical(const XYZPsiState &s1,
 }
 
 // If waypoint distance is 0, then it will use the default waypoint distance
-bool trochoids::get_trochoid_path(const XYZPsiState &s1, 
-                                const XYZPsiState &s2, 
-                                std::vector<XYZPsiState> &extended_path_out, 
-                                const double *wind, 
-                                double v, 
+bool trochoids::get_trochoid_path(const XYZPsiState &s1,
+                                const XYZPsiState &s2,
+                                std::vector<XYZPsiState> &extended_path_out,
+                                const double *wind,
+                                double v,
                                 double max_kappa,
                                 double waypoint_distance)
 {
@@ -115,14 +117,18 @@ bool trochoids::get_trochoid_path(const XYZPsiState &s1,
         new_state.x = std::get<0>(path[i]);
         new_state.y = std::get<1>(path[i]);
         new_state.psi = std::get<2>(path[i]);
-        new_state.z = s1.z + (((double)i) / (double)path.size()) * (s2.z - s1.z);
+        new_state.z = s1.z + ((static_cast<double>(i)) / static_cast<double>(path.size())) * (s2.z - s1.z);
 
         extended_path_out.push_back(new_state);
     }
     return true;
 }
 
-double trochoids::get_length(const XYZPsiState &s1, const XYZPsiState &s2, const double *wind, double v, double max_kappa)
+double trochoids::get_length(const XYZPsiState &s1,
+                             const XYZPsiState &s2,
+                             const double *wind,
+                             double v,
+                             double max_kappa)
 {
     trochoids::Trochoid trochoid;
     trochoid.use_trochoid_classification = true;
@@ -144,10 +150,10 @@ double trochoids::get_length(const XYZPsiState &s1, const XYZPsiState &s2, const
         double x = std::get<0>(path[i]);
         double y = std::get<1>(path[i]);
         double psi = std::get<2>(path[i]);
-        double z = s1.z + (((double)i) / (double)path.size()) * (s2.z - s1.z);
+        double z = s1.z + ((static_cast<double>(i)) / static_cast<double>(path.size())) * (s2.z - s1.z);
         double x_ = std::get<0>(path[i + 1]);
         double y_ = std::get<1>(path[i + 1]);
-        double z_ = s1.z + (((double)(i+1)) / (double)path.size()) * (s2.z - s1.z);
+        double z_ = s1.z + ((static_cast<double>(i+1)) / static_cast<double>(path.size())) * (s2.z - s1.z);
 
         length += sqrt(pow(x_ - x, 2) + pow(y_ - y, 2) + pow(z_ - z, 2));
     }

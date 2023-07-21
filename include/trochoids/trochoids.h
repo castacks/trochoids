@@ -35,12 +35,15 @@
 
 /* Authors: Sagar Sachdev, Brady Moon, Jay Patrikar */
 
-#ifndef TROCHOIDS_H
-#define TROCHOIDS_H
+#ifndef TROCHOIDS_TROCHOIDS_H
+#define TROCHOIDS_TROCHOIDS_H
 
 #define EPSILON 1e-5
 #include <math.h>
 #include <vector>
+#include <tuple>
+#include <utility>
+#include <algorithm>
 #include <iostream>
 #include <trochoids/DubinsStateSpace.h>
 #include "trochoids/trochoid_utils.h"
@@ -49,77 +52,74 @@
 namespace trochoids
 {
 
-    class Trochoid
+class Trochoid
+{
+    double del1, del2, v, w, vw, phi1, phi2, psi_w;
+    double xt10, yt10, xt20, yt20, E, G;
+    double waypoint_distance = 0;
+
+public:
+    typedef std::vector<std::tuple<double, double, double>> Path;
+
+    struct Problem
     {
-
-        double del1, del2, v, w, vw, phi1, phi2, psi_w;
-        double xt10, yt10, xt20, yt20, E, G;
-        double waypoint_distance = 0;
-        
-
-    public:
-        typedef std::vector<std::tuple<double, double, double>> Path;
-
-        struct Problem
-        {
-            std::vector<double> X0; // x, y, psi
-            std::vector<double> Xf; // x, y, psi
-            std::vector<double> wind; // x, y
-            double max_kappa;
-            double v; // m/s
-        };
-        Problem problem;
-        bool use_trochoid_classification = true;
-        
-        Trochoid(){};
-
-        Path getTrochoidNumerical(bool exhaustive_solve_only = false, 
-                                  double waypoint_distance = 0);
-
-        Path getTrochoid(double waypoint_distance = 0);
-
-        static double get_length(Path path);
-
-        Path get_path(double t1, double t2);
-
-        //TODO: Could remove from header after unit testing
-        static std::vector<double> decision_pts(double x0, double y0, 
-                                                double xf, double yf, 
-                                                double psi1_trochoidal, 
-                                                double psi2_trochoidal);
-
-    private:
-        double func(double t, double k);
-
-        double derivfunc(double t, double k);
-
-        double newtonRaphson(double x, double k, int idx_max = 100);
-
-        void exhaustive_numerical_solve(double &del1, double &del2, 
-                                        double &phi1, double &phi2, 
-                                        double &vw, double &step_size,
-                                        double &xt10, double &xt20, 
-                                        double &yt10, double &yt20,
-                                        double &best_time, Path &final_path);
-        
-        void dubins_solve(double &phi1, double &phi2,
-                          double &x0, double &xf, 
-                          double &y0, double &yf,
-                          Path &final_path);
-
-        void check_roots(double &del1, double &w,
-                         double &phi1, double &F,
-                         double &root1, double &root2, int &index);
-
-        std::vector<std::pair<double, double>> trochoid_classification(double x0, 
-                                                                       double y0, 
-                                                                       double xf, 
-                                                                       double yf);
-
-        bool check_within_four_r(double d2, double d1, double x0, double y0, double xf, double yf);
-
-        bool check_within_four_r(double d, double x0, double y0, double xf, double yf);
+        std::vector<double> X0;  // x, y, psi
+        std::vector<double> Xf;  // x, y, psi
+        std::vector<double> wind;  // x, y
+        double max_kappa;
+        double v;  // m/s
     };
-}
+    Problem problem;
+    bool use_trochoid_classification = true;
 
-#endif
+    Trochoid() {}
+
+    Path getTrochoidNumerical(bool exhaustive_solve_only = false,
+                                double waypoint_distance = 0);
+
+    Path getTrochoid(double waypoint_distance = 0);
+
+    static double get_length(Path path);
+
+    Path get_path(double t1, double t2);
+
+    static std::vector<double> decision_pts(double x0, double y0,
+                                            double xf, double yf,
+                                            double psi1_trochoidal,
+                                            double psi2_trochoidal);
+
+private:
+    double func(double t, double k);
+
+    double derivfunc(double t, double k);
+
+    double newtonRaphson(double x, double k, int idx_max = 100);
+
+    void exhaustive_numerical_solve(double &del1, double &del2,
+                                    double &phi1, double &phi2,
+                                    double &vw, double &step_size,
+                                    double &xt10, double &xt20,
+                                    double &yt10, double &yt20,
+                                    double &best_time, Path &final_path);
+
+    void dubins_solve(double &phi1, double &phi2,
+                        double &x0, double &xf,
+                        double &y0, double &yf,
+                        Path &final_path);
+
+    void check_roots(double &del1, double &w,
+                        double &phi1, double &F,
+                        double &root1, double &root2, int &index);
+
+    std::vector<std::pair<double, double>> trochoid_classification(double x0,
+                                                                    double y0,
+                                                                    double xf,
+                                                                    double yf);
+
+    bool check_within_four_r(double d2, double d1, double x0, double y0, double xf, double yf);
+
+    bool check_within_four_r(double d, double x0, double y0, double xf, double yf);
+};
+}  // namespace trochoids
+
+#endif  // TROCHOIDS_TROCHOIDS_H

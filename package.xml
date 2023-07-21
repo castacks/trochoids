@@ -10,6 +10,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>cmake_modules</depend>
+  <build_depend>roslint</build_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
