@@ -35,51 +35,51 @@
 
 /* Authors: Sagar Sachdev, Brady Moon, Jay Patrikar */
 
-#ifndef TROCHOID_UTILS_H
-#define TROCHOID_UTILS_H
+#ifndef TROCHOIDS_TROCHOID_UTILS_H
+#define TROCHOIDS_TROCHOID_UTILS_H
 
-#include "trochoids.h"
+#include "trochoids/trochoids.h"
 
 #define M_2PI 2.0*M_PI
 
 namespace trochoids
 {
-    struct XYZPsiState
-    {
-        double x;
-        double y;
-        double z;
-        double psi;
-    };
+struct XYZPsiState
+{
+    double x;
+    double y;
+    double z;
+    double psi;
+};
 
-    double WrapTo2Pi(double a1);
+double WrapTo2Pi(double a1);
 
-    double WrapToPi(double a1);
+double WrapToPi(double a1);
 
-    double get_length(const XYZPsiState &s1, 
-                      const XYZPsiState &s2, 
-                      const double wind[], 
-                      double v, 
-                      double max_kappa);
+double get_length(const XYZPsiState &s1,
+                    const XYZPsiState &s2,
+                    const double wind[],
+                    double v,
+                    double max_kappa);
 
-    double get_length(std::vector<XYZPsiState> &path);
+double get_length(std::vector<XYZPsiState> &path);
 
-    bool get_trochoid_path(const XYZPsiState &s1, 
-                         const XYZPsiState &s2, 
-                         std::vector<XYZPsiState> &path, 
-                         const double wind[], 
-                         double v, 
-                         double max_kappa, 
-                         double waypoint_distance = 0);
+bool get_trochoid_path(const XYZPsiState &s1,
+                        const XYZPsiState &s2,
+                        std::vector<XYZPsiState> &path,
+                        const double wind[],
+                        double v,
+                        double max_kappa,
+                        double waypoint_distance = 0);
 
-    bool get_trochoid_path_numerical(const XYZPsiState &s1, 
-                                     const XYZPsiState &s2, 
-                                     std::vector<XYZPsiState> &path, 
-                                     const double wind[], 
-                                     double v, 
-                                     double max_kappa, 
-                                     bool exhaustive_solve_only = false,
-                                     double waypoint_distance = 0);
-}
+bool get_trochoid_path_numerical(const XYZPsiState &s1,
+                                    const XYZPsiState &s2,
+                                    std::vector<XYZPsiState> &path,
+                                    const double wind[],
+                                    double v,
+                                    double max_kappa,
+                                    bool exhaustive_solve_only = false,
+                                    double waypoint_distance = 0);
+}  // namespace trochoids
 
-#endif
+#endif  // TROCHOIDS_TROCHOID_UTILS_H

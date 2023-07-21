@@ -66,10 +66,20 @@ RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
 
 #############
 ## Testing ##
-#############
+############# 
 
 ## Add gtest based cpp test target and link libraries
 if(CATKIN_ENABLE_TESTING)
+  # find_package(roslint)
+  # ## catkin build trochoids --make-args roslint
+  # set(ROSLINT_CPP_OPTS "--filter=-build/include_what_you_use, -runtime/references, -runtime/explicit")
+  # roslint_cpp(src/trochoids.cpp
+  #             src/DubinsStateSpace.cpp
+  #             src/trochoid_utils.cpp
+  #             include/trochoids/trochoids.h 
+  #             include/trochoids/DubinsStateSpace.h
+  #             include/trochoids/trochoid_utils.h)
+
   catkin_add_gtest(${PROJECT_NAME}-test test/unit_test_trochoids.cpp
                                         src/trochoids.cpp
                                         src/trochoid_utils.cpp
