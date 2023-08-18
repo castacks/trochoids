@@ -38,7 +38,7 @@
 #ifndef TROCHOIDS_DUBINSSTATESPACE_H
 #define TROCHOIDS_DUBINSSTATESPACE_H
 
-#include <boost/math/constants/constants.hpp>
+#include <cassert>
 #include <iostream>
 #include <math.h>
 #include <vector>

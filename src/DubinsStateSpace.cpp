@@ -41,7 +41,7 @@
 
 namespace Dubins
 {
-    const double twopi = 2. * boost::math::constants::pi<double>();
+    const double twopi = 2. * M_PI;
     const double DUBINS_EPS = 1e-6;
     const double DUBINS_ZERO = -1e-7;
 
