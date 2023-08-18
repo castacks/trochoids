@@ -1370,7 +1370,7 @@ TEST(TestTrochoids, trochoid_analytical_failure_case1)
 
     trochoid_path.clear();
     bool valid_numerical = trochoids::get_trochoid_path_numerical(start_state, goal_state, trochoid_path, wind, desired_speed, max_kappa);
-    double dist_numerical;
+    double dist_numerical = 0;
     if (valid_numerical)
         dist_numerical = trochoids::get_length(trochoid_path);
     EXPECT_TRUE(valid_numerical);
