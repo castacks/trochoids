@@ -445,5 +445,41 @@ static void BM_GetTrochoid_with_classification(benchmark::State& state) {
 }
 BENCHMARK(BM_GetTrochoid_with_classification);
 
+static void BM_Dubins_Random_Exhaustive(benchmark::State& state) {
+    std::random_device rd;
+    std::mt19937 gen = std::mt19937(rd());
+    std::uniform_real_distribution<> disRange(-1000, 1000);
+    std::uniform_real_distribution<> disPhi(0.0, 2.0 * M_PI);
+
+    double max_kappa = 0.01;
+
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+    for (auto _ : state){
+        benchmark::DoNotOptimize(dubins_path_object.dubins({disRange(gen), disRange(gen), disPhi(gen)}, {disRange(gen), disRange(gen), disPhi(gen)}));
+        benchmark::ClobberMemory();
+    }
+        
+}
+BENCHMARK(BM_Dubins_Random_Exhaustive);
+
+static void BM_Dubins_Random_Classification(benchmark::State& state) {
+    std::random_device rd;
+    std::mt19937 gen = std::mt19937(rd());
+    std::uniform_real_distribution<> disRange(-1000, 1000);
+    std::uniform_real_distribution<> disPhi(0.0, 2.0 * M_PI);
+
+    double max_kappa = 0.01;
+
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+    for (auto _ : state){
+        benchmark::DoNotOptimize(dubins_path_object.dubins_matrix({disRange(gen), disRange(gen), disPhi(gen)}, {disRange(gen), disRange(gen), disPhi(gen)}));
+        benchmark::ClobberMemory();
+    }
+        
+}
+BENCHMARK(BM_Dubins_Random_Classification);
+
 
 BENCHMARK_MAIN();
