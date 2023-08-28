@@ -371,7 +371,7 @@ std::vector<std::pair<double, double>> trochoids::Trochoid::trochoid_classificat
             }
         }
         // Compute the quadrant between the decision points
-        if (std::isnan(d_between_angle))  // No decision points
+        if (std::isnan(d_between_angle))  // No decision points or at last decision point
         {
             bool within_four_r = check_within_four_r(decision_points[decision_points.size()-1], x0, y0, xf, yf);
             if (within_four_r)

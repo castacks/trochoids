@@ -313,6 +313,9 @@ TEST_F(DubinsTestFixture, dubins_matrix_test_random)
             std::cout << "Dubins Path Length: " << dubins_path_length << std::endl;
             std::cout << "Max_Kappa: " << max_kappa << std::endl;
 
+            std::cout << "Start State: " << start_state.x << ", " << start_state.y << ", " << start_state.theta << std::endl;
+            std::cout << "Goal State: " << goal_state.x << ", " << goal_state.y << ", " << goal_state.theta << std::endl;
+
             std::cout << "Dubins Matrix Path Type: " << dubins_path_matrix.type_[0] << ", " << dubins_path_matrix.type_[1] << ", " << dubins_path_matrix.type_[2] << std::endl;
             std::cout << "Dubins Path Type: " << dubins_path.type_[0] << ", " << dubins_path.type_[1] << ", " << dubins_path.type_[2] << std::endl;
         }
@@ -427,6 +430,62 @@ TEST_F(DubinsTestFixture, failure_case_dubins_matrix4)
     // std::cout << "dubins_path_length: " << dubins_path.length() << std::endl;
     // std::cout << "dubins_path_type: " << dubins_path.type_[0] << ", " << dubins_path.type_[1] << ", " << dubins_path.type_[2] << std::endl;
 }   
+
+TEST_F(DubinsTestFixture, failure_case_dubins_four_r1_1)
+{
+    /*
+    Dubins Matrix Path Length: 8.26153
+    Dubins Path Length: 8.07563
+    Max_Kappa: 0.00572078
+    Start State: -51.074, -287.227, 0.888931
+    Goal State: -607.936, -471.39, 1.94105
+    Dubins Matrix Path Type: 2, 1, 2
+    Dubins Path Type: 2, 0, 2
+    */
+    max_kappa = 0.00572078;
+    // Run dubins on this (should choose dubinsLSL and segfault)
+
+    Dubins::DubinsStateSpace::DubinsState start_state = {-51.074, -287.227, 0.888931};
+    Dubins::DubinsStateSpace::DubinsState goal_state = {-607.936, -471.39, 1.94105};
+
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+    dubins_path_matrix = dubins_path_object.dubins_matrix(start_state, goal_state);
+    dubins_path = dubins_path_object.dubins(start_state, goal_state);
+
+    double dubins_matrix_path_length = dubins_path_matrix.length();
+    double dubins_path_length = dubins_path.length();
+
+    EXPECT_TRUE(abs(dubins_matrix_path_length - dubins_path_length) < 1e-5);
+} 
+
+TEST_F(DubinsTestFixture, failure_case_dubins_four_r1_2)
+{
+    /*
+    Dubins Matrix Path Length: 1.79769e+308
+    Dubins Path Length: 6.60756
+    Max_Kappa: 0.00982667
+    Start State: -347.852, 202.189, 3.46437
+    Goal State: -505.575, 148.801, 0.333584
+    Dubins Matrix Path Type: 0, 1, 0
+    Dubins Path Type: 2, 0, 2
+    */
+    max_kappa = 0.00982667;
+    // Run dubins on this (should choose dubinsLSL and segfault)
+
+    Dubins::DubinsStateSpace::DubinsState start_state = {-347.852, 202.189, 3.46437};
+    Dubins::DubinsStateSpace::DubinsState goal_state = {-505.575, 148.801, 0.333584};
+
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+    dubins_path_matrix = dubins_path_object.dubins_matrix(start_state, goal_state);
+    dubins_path = dubins_path_object.dubins(start_state, goal_state);
+
+    double dubins_matrix_path_length = dubins_path_matrix.length();
+    double dubins_path_length = dubins_path.length();
+
+    EXPECT_TRUE(abs(dubins_matrix_path_length - dubins_path_length) < 1e-5);
+} 
 
 TEST_F(DubinsTestFixture, fail_case_8_tests)
 {
