@@ -236,6 +236,13 @@ int Dubins::find_quadrant(double angle)
         return 4;  // fourth quadrant
 }
 
+/**
+ * @brief Uses the Dubins set classification for solving a Dubins path
+ *
+ * @param state1 DubinsState of the starting pose
+ * @param state2 DubinsState of the ending pose
+ * @return DubinsPath
+ */
 Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(const DubinsState state1,
                                                                               const DubinsState state2) const
 {
@@ -243,8 +250,8 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
     double x2 = state2.x, y2 = state2.y, th2 = state2.theta;
     double dx = x2 - x1, dy = y2 - y1, d = sqrt(dx * dx + dy * dy) / rho_, th = atan2(dy, dx);
     double alpha = mod2pi(th1 - th), beta = mod2pi(th2 - th);
-    // if (d > (sqrt(4 - pow((abs(cos(alpha)) + abs(cos(beta))),2)) + abs(sin(alpha)) + abs(sin(beta))))
-    if (d > 4)
+    if (d > (std::abs(std::sin(alpha)) + std::abs(std::sin(beta)) +
+                std::sqrt(4 - std::pow(std::cos(alpha) + std::cos(beta), 2))))
     {
         int init_quadrant = find_quadrant(alpha);
         int final_quadrant = find_quadrant(beta);
