@@ -69,8 +69,8 @@ jobs:
         comment-on-alert: true
         # Mention @rhysd in the commit comment
         alert-comment-cc-users: '@bradygm'
-        alert-threshold: 200%
-        # comment-always: true
+        alert-threshold: 150%
+        comment-always: true
     # Upload the updated cache file for the next job by actions/cache
 
     - name: Run unit tests
