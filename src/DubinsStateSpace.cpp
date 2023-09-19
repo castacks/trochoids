@@ -278,10 +278,10 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
             DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
             double S13 = dubinsrsr.length_[0] - M_PI;
-            double S12 = dubinsrsr.length_[1] - dubinsrsl.length_[1] - 2*(dubinsrsl.length_[2] - M_PI);
 
             if (S13 <= 0)
             {
+                double S12 = dubinsrsr.length_[1] - dubinsrsl.length_[1] - 2*(dubinsrsl.length_[2] - M_PI);
                 if (S12 > 0)
                 {
                     return dubinsrsl;
@@ -327,10 +327,10 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
             DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
             double S31 = dubinslsl.length_[2] - M_PI;
-            double S21 = dubinslsl.length_[1] - dubinsrsl.length_[1] - 2*(dubinsrsl.length_[0] - M_PI);
 
             if (S31 <= 0)
             {
+                double S21 = dubinslsl.length_[1] - dubinsrsl.length_[1] - 2*(dubinsrsl.length_[0] - M_PI);
                 if (S21 > 0)
                 {
                     return dubinsrsl;
@@ -362,13 +362,9 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             {
                 return dubinsrsr;
             }
-            else if (S24 > 0)
-            {
-                return dubinsRSL(d, alpha, beta);
-            }
             else
             {
-                return Dubins::dubins(d, alpha, beta);
+                return dubinsRSL(d, alpha, beta);
             }
         }
         else if (init_quadrant == 3 && final_quadrant == 1)
@@ -380,13 +376,9 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             {
                 return dubinslsl;
             }
-            else if (S31 > 0)
-            {
-                return dubinsLSR(d, alpha, beta);
-            }
             else
             {
-                return Dubins::dubins(d, alpha, beta);
+                return dubinsLSR(d, alpha, beta);
             }
         }
         else if (init_quadrant == 3 && final_quadrant == 4)
@@ -394,10 +386,10 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
             DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
             double S24 = dubinsrsr.length_[2] - M_PI;
-            double S34 = dubinsrsr.length_[1] - dubinslsr.length_[1] - 2*(dubinslsr.length_[0] - M_PI);
 
             if (S24 <= 0)
             {
+                double S34 = dubinsrsr.length_[1] - dubinslsr.length_[1] - 2*(dubinslsr.length_[0] - M_PI);
                 if (S34 > 0)
                 {
                     return dubinslsr;
@@ -429,13 +421,9 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             {
                 return dubinslsl;
             }
-            else if (S42 > 0)
-            {
-                return dubinsRSL(d, alpha, beta);
-            }
             else
             {
-                return Dubins::dubins(d, alpha, beta);
+                return dubinsRSL(d, alpha, beta);
             }
         }
         else if (init_quadrant == 4 && final_quadrant == 3)
@@ -443,10 +431,10 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
             DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
             DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
             double S42 = dubinslsl.length_[0] - M_PI;
-            double S43 = dubinslsl.length_[1] - dubinslsr.length_[1] - 2*(dubinslsr.length_[2] - M_PI);
 
             if (S42 <= 0)
             {
+                double S43 = dubinslsl.length_[1] - dubinslsr.length_[1] - 2*(dubinslsr.length_[2] - M_PI);
                 if (S43 > 0)
                 {
                     return dubinslsr;
@@ -492,18 +480,14 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
         }
         else if (init_quadrant == 2 && final_quadrant == 2)
         {
-            DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
             DubinsPath dubinsrsl = dubinsRSL(d, alpha, beta);
-            DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
-
-            double plsl = dubinslsl.length_[1];
             double prsl = dubinsrsl.length_[1];
-            double trsl = dubinsrsl.length_[0];
-            double prsr = dubinsrsr.length_[1];
-            double qrsl = dubinsrsl.length_[2];
-
+            
             if (alpha > beta)
             {
+                DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
+                double trsl = dubinsrsl.length_[0];
+                double plsl = dubinslsl.length_[1];
                 double S122 = plsl - prsl - 2*(trsl - M_PI);
                 if (S122 < 0)
                 {
@@ -518,8 +502,11 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                     return Dubins::dubins(d, alpha, beta);
                 }
             }
-            else if (alpha < beta)
+            else
             {
+                DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
+                double prsr = dubinsrsr.length_[1];
+                double qrsl = dubinsrsl.length_[2];
                 double S222 = prsr - prsl - 2*(qrsl - M_PI);
                 if (S222 < 0)
                 {
@@ -534,24 +521,17 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                     return Dubins::dubins(d, alpha, beta);
                 }
             }
-            else
-            {
-                return Dubins::dubins(d, alpha, beta);
-            }
         }
         else if (init_quadrant == 3 && final_quadrant == 3)
         {
-            DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
             DubinsPath dubinslsr = dubinsLSR(d, alpha, beta);
-            DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
-
-            double prsr = dubinsrsr.length_[1];
             double plsr = dubinslsr.length_[1];
-            double tlsr = dubinslsr.length_[0];
-            double plsl = dubinslsl.length_[1];
-            double qlsr = dubinslsr.length_[2];
+            
             if (alpha < beta)
             {
+                DubinsPath dubinsrsr = dubinsRSR(d, alpha, beta);
+                double prsr = dubinsrsr.length_[1];
+                double tlsr = dubinslsr.length_[0];
                 double S133 = prsr - plsr - 2*(tlsr - M_PI);
                 if (S133 < 0)
                 {
@@ -566,8 +546,11 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                     return Dubins::dubins(d, alpha, beta);
                 }
             }
-            else if (alpha > beta)
+            else
             {
+                DubinsPath dubinslsl = dubinsLSL(d, alpha, beta);
+                double plsl = dubinslsl.length_[1];
+                double qlsr = dubinslsr.length_[2];
                 double S233 = plsl - plsr - 2*(qlsr - M_PI);
                 if (S233 < 0)
                 {
@@ -581,10 +564,6 @@ Dubins::DubinsStateSpace::DubinsPath Dubins::DubinsStateSpace::dubins_matrix(con
                 {
                     return Dubins::dubins(d, alpha, beta);
                 }
-            }
-            else
-            {
-                return Dubins::dubins(d, alpha, beta);
             }
         }
         else if (init_quadrant == 4 && final_quadrant == 1)

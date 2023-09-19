@@ -481,5 +481,64 @@ static void BM_Dubins_Random_Classification(benchmark::State& state) {
 }
 BENCHMARK(BM_Dubins_Random_Classification);
 
+static void BM_Dubins_a12(benchmark::State& state) {
+    double max_kappa = 0.01;
+
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+    for (auto _ : state){
+        benchmark::DoNotOptimize(dubins_path_object.dubins({0, 0, 0.5}, {800, 0, 2.4}));
+        benchmark::ClobberMemory();
+    }
+        
+}
+BENCHMARK(BM_Dubins_a12);
+
+static void BM_Dubins_a12_random(benchmark::State& state) {
+    std::random_device rd;
+    std::mt19937 gen = std::mt19937(rd());
+    std::uniform_real_distribution<> disPhi1(0.0, M_PI_2);
+    std::uniform_real_distribution<> disPhi2(M_PI_2, M_PI);
+    double max_kappa = 0.01;
+
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+    for (auto _ : state){
+        benchmark::DoNotOptimize(dubins_path_object.dubins_matrix({0, 0, disPhi1(gen)}, {800, 0, disPhi2(gen)}));
+        benchmark::ClobberMemory();
+    }
+        
+}
+BENCHMARK(BM_Dubins_a12_random);
+
+static void BM_Dubins_a22(benchmark::State& state) {
+    double max_kappa = 0.01;
+
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+    for (auto _ : state){
+        benchmark::DoNotOptimize(dubins_path_object.dubins({0, 0, 2.8}, {800, 0, 2.4}));
+        benchmark::ClobberMemory();
+    }
+        
+}
+BENCHMARK(BM_Dubins_a22);
+
+static void BM_Dubins_a22_random(benchmark::State& state) {
+    std::random_device rd;
+    std::mt19937 gen = std::mt19937(rd());
+    std::uniform_real_distribution<> disPhi2(M_PI_2, M_PI);
+    double max_kappa = 0.01;
+
+    Dubins::DubinsStateSpace dubins_path_object(1/max_kappa);
+
+    for (auto _ : state){
+        benchmark::DoNotOptimize(dubins_path_object.dubins_matrix({0, 0, disPhi2(gen)}, {800, 0, disPhi2(gen)}));
+        benchmark::ClobberMemory();
+    }
+        
+}
+BENCHMARK(BM_Dubins_a22_random);
+
 
 BENCHMARK_MAIN();
