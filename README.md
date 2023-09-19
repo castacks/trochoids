@@ -2,7 +2,7 @@
 # Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification 
 
 This repository contains code for the paper
-**<a href="https://arxiv.org/abs/2306.11845">"Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification"</a>**  by *<a href="https://sagars2.com">Sagar Sachdev\*</a>, <a href="https://bradymoon.com">Brady Moon\*</a>, <a href="https://theairlab.org/team/junbiny/">Junbin Yuan</a>, and <a href="https://www.ri.cmu.edu/ri-faculty/sebastian-scherer/">Sebastian Scherer</a> (\* equal contribution)*.
+**<a href="https://arxiv.org/abs/2306.11845">"Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification"</a>**  by *<a href="https://bradymoon.com">Brady Moon\*</a>, <a href="https://sagars2.com">Sagar Sachdev\*</a>, <a href="https://theairlab.org/team/junbiny/">Junbin Yuan</a>, and <a href="https://www.ri.cmu.edu/ri-faculty/sebastian-scherer/">Sebastian Scherer</a> (\* equal contribution)*.
 
 This codebase includes both a solver for trochoidal paths when there is wind as well as also solving Dubins paths when there is no wind. The Dubins path solutions use the work <a href="http://dx.doi.org/10.1016/S0921-8890(00)00127-5">"Classification of the Dubins set"</a> as well as the correction proposed in the work  <a href="https://www.research-collection.ethz.ch/handle/20.500.11850/615185">"Circling Back: Dubins set Classification Revisited."</a>
 
@@ -11,27 +11,7 @@ This codebase includes both a solver for trochoidal paths when there is wind as 
 </p>
 
 ## Brief Overview
- Time-optimal path planning in high winds for a
-turning rate constrained UAV is a challenging problem to solve
-and is important for deployment and field operations. Previous
-works have used trochoidal path segments, which consist of
-straight and maximum-rate turn segments, as optimal extremal
-paths in uniform wind conditions. Current methods iterate
-over all candidate trochoidal trajectory types and choose the
-time-optimal one; however, this can be computationally slow.
-As such, a method to narrow down the candidate trochoidal
-trajectory types before computing the trajectories would reduce
-the computation time. We thus introduce a geometric
-approach to reduce the candidate trochoidal trajectory types by
-framing the problem in the air-relative frame and bounding the
-solution within a subset of candidate trajectories. This method
-reduces overall computation by around 37% compared to pre-
-existing methods in Bang-Straight-Bang trajectories, freeing
-up computation for other onboard processes and can lead to
-significant total computational reductions when solving many
-trochoidal paths. When used within the framework of a global
-path planner, faster state expansions help find solutions faster or
-compute higher-quality paths.
+Time-optimal path planning in high winds for a turning-rate constrained UAV is a challenging problem to solve and is important for deployment and field operations. Previous works have used trochoidal path segments comprising straight and maximum-rate turn segments, as optimal extremal paths in uniform wind conditions. Current methods iterate over all candidate trochoidal trajectory types and select the one that is time-optimal; however, this exhaustive search can be computationally slow. In this paper, we introduce a method to decrease the computation time. This is achieved by reducing the number of candidate trochoidal trajectory types by framing the problem in the air-relative frame and bounding the solution within a subset of candidate trajectories. Our method reduces overall computation by 37.4% compared to pre-existing methods in Bang-Straight-Bang trajectories, freeing up computation for other onboard processes and can lead to significant total computational reductions when solving many trochoidal paths. When used within the framework of a global path planner, faster state expansions help find solutions faster or compute higher-quality paths. We also release our open-source codebase as a C++ package.
 
 
 ## Prerequisites
@@ -107,9 +87,9 @@ bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path
 ## Citation
 If you find this work useful, please cite our paper:
 ```
-@article{sachdev2023timeoptimal,
+@article{moon2023timeoptimal,
         title={Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification}, 
-        author={Sagar Sachdev and Brady Moon and Junbin Yuan and Sebastian Scherer},
+        author={Brady Moon and Sagar Sachdev and Junbin Yuan and Sebastian Scherer},
         year={2023},
         eprint={2306.11845},
         archivePrefix={arXiv},
