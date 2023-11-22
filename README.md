@@ -86,13 +86,15 @@ bool valid = trochoids::get_trochoid_path(start_state, goal_state, trochoid_path
 
 ## Citation
 If you find this work useful, please cite our paper:
-```
+```BibTeX
 @article{moon2023timeoptimal,
-        title={Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification}, 
-        author={Brady Moon and Sagar Sachdev and Junbin Yuan and Sebastian Scherer},
-        year={2023},
-        eprint={2306.11845},
-        archivePrefix={arXiv},
-        primaryClass={cs.RO}
+    title={Time-Optimal Path Planning in a Constant Wind for Uncrewed Aerial Vehicles using Dubins Set Classification}, 
+    author={Brady Moon and Sagar Sachdev and Junbin Yuan and Sebastian Scherer},
+    year={2023},
+    journal = {IEEE Robotics and Automation Letters},
+    publisher = {IEEE},
+    doi = {10.1109/LRA.2023.3333167},
+    url = {https://arxiv.org/pdf/2306.11845.pdf},
+    video = {https://youtu.be/qOU5gI7JshI}
 }
 ```
