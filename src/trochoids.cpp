@@ -483,8 +483,6 @@ Path trochoids::Trochoid::getTrochoid(double waypoint_distance)
                             continue;
                         }
 
-                        double xt1dot = v*cos(del1*w*t1_ + phi1) + vw;
-                        double yt1dot = v*sin(del1*w*t1_ + phi1);
                         double xt2dot = v*cos(del2*w*t2 + phi2) + vw;
                         double yt2dot = v*sin(del2*w*t2 + phi2);
 
