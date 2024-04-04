@@ -1,4 +1,4 @@
-FROM ros:melodic
+FROM ros:noetic
 
 WORKDIR /ws/src
 

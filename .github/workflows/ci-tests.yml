@@ -39,7 +39,7 @@ jobs:
     - name: Run benchmark
       shell: bash
       run: |
-        source /opt/ros/melodic/setup.bash
+        source /opt/ros/noetic/setup.bash
         source ws/devel/setup.bash
         ./ws/devel/lib/trochoids/trochoids-benchmark --benchmark_format=json | tee benchmark_result.json
         git config --global user.name "Github Action"
@@ -76,7 +76,7 @@ jobs:
     - name: Run unit tests
       shell: bash
       run: |
-        source /opt/ros/melodic/setup.bash
+        source /opt/ros/noetic/setup.bash
         source ws/devel/setup.bash
         ./ws/devel/lib/trochoids/trochoids-test
 
@@ -118,7 +118,7 @@ jobs:
 #     - name: Run benchmark
 #       shell: bash
 #       run: |
-#         source /opt/ros/melodic/setup.bash
+#         source /opt/ros/noetic/setup.bash
 #         source ws/devel/setup.bash
 #         roscore &
 #         sleep 3
