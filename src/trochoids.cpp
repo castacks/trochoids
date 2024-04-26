@@ -416,6 +416,10 @@ Path trochoids::Trochoid::getTrochoid(double waypoint_distance)
     double best_time = std::numeric_limits<double>::infinity();
     Path final_path;
     Path temp_path;
+    // offset the final position in direction of Xf[2]
+    problem.true_Xf = problem.Xf;
+    problem.Xf[0] -= waypoint_distance*cos(problem.Xf[2]);
+    problem.Xf[1] -= waypoint_distance*sin(problem.Xf[2]);
     psi_w = trochoids::WrapTo2Pi(atan2(problem.wind[1], problem.wind[0]));
     // Transform to trochoidal frame
     double x0 = problem.X0[0] * cos(psi_w) + problem.X0[1] * sin(psi_w);
@@ -433,7 +437,7 @@ Path trochoids::Trochoid::getTrochoid(double waypoint_distance)
         dubins_solve(phi1, phi2,
                     x0, xf,
                     y0, yf, final_path);
-
+        final_path.push_back(std::make_tuple(problem.true_Xf[0], problem.true_Xf[1], problem.true_Xf[2]));
         return final_path;
     }
     std::vector<std::pair<double, double>> del = trochoid_classification(x0, y0, xf, yf);
@@ -509,6 +513,7 @@ Path trochoids::Trochoid::getTrochoid(double waypoint_distance)
                                         yt10, yt20, best_time, final_path);
         }
     }
+    final_path.push_back(std::make_tuple(problem.true_Xf[0], problem.true_Xf[1], problem.true_Xf[2]));
     return final_path;
 }
 

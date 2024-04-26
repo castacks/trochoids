@@ -65,6 +65,7 @@ public:
     {
         std::vector<double> X0;  // x, y, psi
         std::vector<double> Xf;  // x, y, psi
+        std::vector<double> true_Xf;  // x, y, psi
         std::vector<double> wind;  // x, y
         double max_kappa;
         double v;  // m/s
